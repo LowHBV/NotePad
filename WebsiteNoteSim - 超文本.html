@@ -948,6 +948,7 @@
     top: 60%; /* 原为50% */
 }
 
+
 </style>
 </head>
 <body>
@@ -966,6 +967,26 @@
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     z-index: 2;">
+
+    <button class="tool-button" style="
+                background-image: linear-gradient(to right,
+                rgba(255, 88, 51, 0.1),
+                rgba(255, 204, 51, 0.1),
+                rgba(170, 255, 51, 0.1),
+                rgba(51, 255, 88, 0.1),
+                rgba(51, 204, 255, 0.1),
+                rgba(88, 51, 255, 0.1),
+                rgba(204, 51, 255, 0.1)
+            );
+            color: var(--text-color);
+        " onclick="showAIPanel()" title="AI助手">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+            <path d="M22 21c-2.5 2.5-5 2.5-7.5 0-2.5 2.5-5 2.5-7.5 0"></path>
+        </svg>
+    </button>
+
     <!-- 代码片段库按钮 -->
     <button class="tool-button" onclick="showSnippetsModal()" title="代码片段库">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -2570,6 +2591,247 @@ function saveFile() {
         <button class="button" onclick="closeFileStatsModal()" style="width: 100%;">关闭</button>
     </div>
 </div>
+
+<!--     Ai Chat      -->
+<div class="modal-overlay" id="aiDialog" style="display:none;">
+    <div class="modal-content" style="width: 600px; max-height: 80vh; display: flex; flex-direction: column;">
+        <div class="ai-header">
+            <h3>AI 助手</h3>
+            <div class="ai-controls">
+                <button class="button" onclick="newAIChat()">新建对话</button>
+                <button class="button" onclick="toggleAISettings()">设置</button>
+                <button class="button" onclick="closeAIPanel()">×</button>
+            </div>
+        </div>
+        
+        <div id="aiChatContainer" class="ai-chat-container">
+            <div id="aiHistory" class="ai-history"></div>
+            <div class="ai-input-area">
+                <textarea id="aiInput" placeholder="输入您的问题..." 
+                         class="ai-input" rows="3"></textarea>
+                <button class="button ai-send-btn" onclick="sendAIRequest()">发送</button>
+            </div>
+        </div>
+
+        <!-- AI设置面板 -->
+        <div id="aiSettings" class="ai-settings" style="display:none;">
+            <div class="setting-item">
+                <label>API 密钥：</label>
+                <input type="password" id="apiKey" class="setting-input">
+            </div>
+            <div class="setting-item">
+                <label>API 端口：</label>
+                <input type="text" id="apiEndpoint" 
+                       value="https://api.example.com/v1/chat/completions"
+                       class="setting-input">
+            </div>
+            <div class="setting-item">
+                <label>模型选择：</label>
+                <select id="aiModel" class="setting-input">
+                    <option value="gpt-3.5">GPT-3.5</option>
+                    <option value="gpt-4">GPT-4</option>
+                    <option value="claude-3">Claude 3</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* AI对话框样式 */
+.ai-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 15px;
+}
+
+.ai-chat-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.ai-history {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background: var(--secondary-bg);
+    border-radius: 8px;
+    min-height: 300px;
+}
+
+.ai-message {
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 8px;
+    max-width: 80%;
+}
+
+.user-message {
+    background: rgba(74, 144, 226, 0.2);
+    margin-left: auto;
+}
+
+.ai-response {
+    background: rgba(255, 255, 255, 0.1);
+    margin-right: auto;
+}
+
+.ai-input-area {
+    display: flex;
+    gap: 10px;
+    position: relative;
+}
+
+.ai-input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--secondary-bg);
+    color: var(--text-color);
+    resize: none;
+}
+
+.ai-send-btn {
+    align-self: flex-end;
+    padding: 8px 20px;
+}
+
+.ai-settings {
+    padding: 15px;
+    background: var(--secondary-bg);
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.setting-item {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.setting-input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--secondary-bg);
+    color: var(--text-color);
+}
+
+[data-theme="light"] .ai-message {
+    background: rgba(0, 0, 0, 0.05);
+}
+</style>
+
+<script>
+// AI对话管理
+let currentChat = [];
+const MAX_HISTORY = 20;
+
+function showAIPanel() {
+    document.getElementById('aiDialog').style.display = 'flex';
+    loadChatHistory();
+}
+
+function closeAIPanel() {
+    document.getElementById('aiDialog').style.display = 'none';
+}
+
+function newAIChat() {
+    currentChat = [];
+    updateChatDisplay();
+}
+
+function toggleAISettings() {
+    const settings = document.getElementById('aiSettings');
+    settings.style.display = settings.style.display === 'none' ? 'block' : 'none';
+}
+
+async function sendAIRequest() {
+    const input = document.getElementById('aiInput');
+    const message = input.value.trim();
+    if (!message) return;
+
+    // 添加到聊天记录
+    addMessage('user', message);
+    input.value = '';
+    
+    try {
+        const response = await fetchAIResponse(message);
+        addMessage('assistant', response);
+        saveChatHistory();
+    } catch (error) {
+        addMessage('system', `错误：${error.message}`);
+    }
+}
+
+async function fetchAIResponse(prompt) {
+    const apiKey = document.getElementById('apiKey').value;
+    const endpoint = document.getElementById('apiEndpoint').value;
+    const model = document.getElementById('aiModel').value;
+
+    if (!apiKey) throw new Error('请先配置API密钥');
+
+    const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+            model: model,
+            messages: [
+                ...currentChat,
+                { role: "user", content: prompt }
+            ]
+        })
+    });
+
+    if (!response.ok) throw new Error(`API请求失败：${response.status}`);
+
+    const data = await response.json();
+    return data.choices[0].message.content;
+}
+
+function addMessage(role, content) {
+    currentChat.push({ role, content });
+    if (currentChat.length > MAX_HISTORY) currentChat.shift();
+    
+    const historyDiv = document.getElementById('aiHistory');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `ai-message ${role}-message`;
+    messageDiv.textContent = `${role === 'user' ? '您：' : 'AI：'} ${content}`;
+    historyDiv.appendChild(messageDiv);
+    historyDiv.scrollTop = historyDiv.scrollHeight;
+}
+
+function saveChatHistory() {
+    localStorage.setItem('aiChatHistory', JSON.stringify(currentChat));
+}
+
+function loadChatHistory() {
+    const history = localStorage.getItem('aiChatHistory');
+    if (history) {
+        currentChat = JSON.parse(history);
+        updateChatDisplay();
+    }
+}
+
+function updateChatDisplay() {
+    const historyDiv = document.getElementById('aiHistory');
+    historyDiv.innerHTML = '';
+    currentChat.forEach(msg => addMessage(msg.role, msg.content));
+}
+</script>
+<!--      AI Chat     -->
+
 
 <!--  NotePad窗口  -->
 <div id="futureNotepadOverlay" class="window-overlay">
@@ -6794,9 +7056,24 @@ function updateLineStats() {
         console.error('错误：未找到 HTML IDE 按钮元素');
     }
 });
+
+    // 添加点击事件监听器
+    document.addEventListener("DOMContentLoaded", function() {
+    const AiChatButton = document.getElementById('AiChatButton');
+    
+    if(AiChatButton) {
+        AiChatButton.addEventListener('click', function() {
+            window.location.href = 'Ai Chat.html';
+        });
+    } else {
+        console.error('错误：未找到 HTML IDE 按钮元素');
+    }
+});
 </script>
     <!-- SecureBox按钮 -->
-    <button id="secureboxButton" style="bottom: 119px;"class="bottom-left-button">SecureBox Pro</button>
+    <button id="AiChatButton" style="bottom: 168px;"class="bottom-left-button">AIChatSuper Beta</button>
+        <!-- SecureBox按钮 -->
+        <button id="secureboxButton" style="bottom: 119px;"class="bottom-left-button">SecureBox Pro</button>
     <!-- HTML IDE 按钮 -->
     <button id="newNotePadButton" class="bottom-left-button">Window NotePad Beta</button>
     <!-- HTML IDE 按钮 -->
