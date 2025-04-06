@@ -1,7 +1,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AI Chat - DeepSeek</title>
     <style>
         /* 主题变量 - 添加在样式表开头 */
@@ -1299,6 +1299,177 @@
         .dark-theme .copy-code-button.copied {
             background: var(--success-color, #4CAF50);
             color: white;
+        }
+
+        /* 移动端响应式适配 */
+        @media (max-width: 768px) {
+            /* 整体布局调整 */
+            body {
+                overflow: hidden;
+            }
+            
+            .app-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr;
+            }
+            
+            /* 侧边栏适配 */
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                top: 0;
+                bottom: 0;
+                width: 280px;
+                z-index: 1000;
+                transition: left 0.3s ease;
+            }
+            
+            .sidebar.show-mobile {
+                left: 0;
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            }
+            
+            /* 添加遮罩层 */
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            
+            .sidebar-overlay.show {
+                display: block;
+                opacity: 1;
+            }
+            
+            /* 主内容区域适配 */
+            .main-content {
+                grid-column: 1 / -1;
+                padding: 0;
+            }
+            
+            /* 顶部导航栏 */
+            .mobile-navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 15px;
+                background: var(--bg-gradient);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                z-index: 900;
+            }
+            
+            .menu-toggle {
+                border: none;
+                background: transparent;
+                color: var(--primary-text);
+                padding: 8px;
+                cursor: pointer;
+                border-radius: 4px;
+            }
+            
+            .menu-toggle:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+            
+            /* 聊天容器适配 */
+            .chat-container {
+                height: calc(100vh - 60px);
+                border-radius: 0;
+                margin: 0;
+            }
+            
+            /* 消息样式适配 */
+            .message {
+                padding: 12px;
+                max-width: 100%;
+            }
+            
+            .message-content {
+                font-size: 15px;
+            }
+            
+            /* 输入区域适配 */
+            .chat-input-container {
+                padding: 10px;
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            #userInput {
+                padding: 12px;
+                font-size: 15px;
+            }
+            
+            .send-button {
+                padding: 10px;
+            }
+            
+            /* 设置和功能区域适配 */
+            .settings-modal {
+                width: 90%;
+                max-width: 350px;
+            }
+            
+            .toggle-container {
+                margin-right: 15px;
+            }
+            
+            /* 主题切换按钮适配 */
+            .theme-toggle {
+                width: 36px;
+                height: 36px;
+                top: auto;
+                bottom: 20px;
+                z-index: 900;
+            }
+            
+            /* 代码块适配 */
+            .message-content pre {
+                max-width: 100%;
+                overflow-x: auto;
+            }
+            
+            /* 上下文菜单适配 */
+            .context-menu {
+                max-width: 250px;
+            }
+            
+            /* 温度滑块适配 */
+            .temperature-slider {
+                max-width: 90%;
+            }
+        }
+
+        /* 确保移动导航栏默认是隐藏的 */
+        .mobile-navbar {
+            display: none;
+        }
+
+        /* 移动端响应式适配 */
+        @media (max-width: 768px) {
+            /* 显示移动导航栏 */
+            .mobile-navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 15px;
+                background: var(--bg-gradient);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                z-index: 900;
+            }
+            
+            /* 其他移动端样式保持不变 */
         }
     </style>
     <!-- 在head标签中添加marked.js库，放在其他script标签之前 -->
@@ -3036,6 +3207,160 @@
                 chatListDiv.appendChild(chatItemDiv);
             });
         }
+
+        // 在body标签开始后添加移动导航栏
+        document.addEventListener('DOMContentLoaded', function() {
+            // 只在小屏幕设备上添加移动导航栏
+            if (window.innerWidth <= 768) {
+                const mainContent = document.querySelector('.main-content');
+                if (mainContent) {
+                    const mobileNavbar = document.createElement('div');
+                    mobileNavbar.className = 'mobile-navbar';
+                    mobileNavbar.innerHTML = `
+                        <button class="menu-toggle" id="mobileMenuToggle">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="3" y1="12" x2="21" y2="12"></line>
+                                <line x1="3" y1="6" x2="21" y2="6"></line>
+                                <line x1="3" y1="18" x2="21" y2="18"></line>
+                            </svg>
+                        </button>
+                        <span>DeepSeek AI</span>
+                        <div style="width: 24px;"></div>
+                    `;
+                    mainContent.insertBefore(mobileNavbar, mainContent.firstChild);
+                }
+                
+                // 只在小屏幕设备上创建侧边栏遮罩层
+                const overlay = document.createElement('div');
+                overlay.className = 'sidebar-overlay';
+                document.body.appendChild(overlay);
+                
+                // 添加侧边栏切换功能
+                initMobileNavigation();
+            }
+            
+            // 监听窗口大小变化，动态添加或移除移动导航栏
+            window.addEventListener('resize', function() {
+                const existingNavbar = document.querySelector('.mobile-navbar');
+                const existingOverlay = document.querySelector('.sidebar-overlay');
+                
+                if (window.innerWidth <= 768) {
+                    // 小屏幕设备，添加移动导航栏（如果不存在）
+                    if (!existingNavbar) {
+                        const mainContent = document.querySelector('.main-content');
+                        if (mainContent) {
+                            const mobileNavbar = document.createElement('div');
+                            mobileNavbar.className = 'mobile-navbar';
+                            mobileNavbar.innerHTML = `
+                                <button class="menu-toggle" id="mobileMenuToggle">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                                    </svg>
+                                </button>
+                                <span>DeepSeek AI</span>
+                                <div style="width: 24px;"></div>
+                            `;
+                            mainContent.insertBefore(mobileNavbar, mainContent.firstChild);
+                        }
+                        
+                        // 添加遮罩层（如果不存在）
+                        if (!existingOverlay) {
+                            const overlay = document.createElement('div');
+                            overlay.className = 'sidebar-overlay';
+                            document.body.appendChild(overlay);
+                        }
+                        
+                        // 初始化移动导航功能
+                        initMobileNavigation();
+                    }
+                } else {
+                    // 大屏幕设备，移除移动导航栏和遮罩层
+                    if (existingNavbar) {
+                        existingNavbar.remove();
+                    }
+                    if (existingOverlay) {
+                        existingOverlay.remove();
+                    }
+                    
+                    // 确保侧边栏可见且样式正确
+                    const sidebar = document.querySelector('.sidebar');
+                    if (sidebar) {
+                        sidebar.classList.remove('show-mobile');
+                        sidebar.style.left = '';
+                    }
+                    
+                    // 重置body样式
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        // 初始化移动导航功能
+        function initMobileNavigation() {
+            const menuToggle = document.getElementById('mobileMenuToggle');
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            
+            if (!menuToggle || !sidebar || !overlay) return;
+            
+            // 点击菜单按钮显示侧边栏
+            menuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('show-mobile');
+                overlay.classList.toggle('show');
+                document.body.style.overflow = sidebar.classList.contains('show-mobile') ? 'hidden' : '';
+            });
+            
+            // 点击遮罩层关闭侧边栏
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('show-mobile');
+                overlay.classList.remove('show');
+                document.body.style.overflow = '';
+            });
+            
+            // 点击侧边栏中的聊天项后关闭侧边栏
+            const chatItems = document.querySelectorAll('.chat-item');
+            chatItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.remove('show-mobile');
+                        overlay.classList.remove('show');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+            
+            // 监听窗口大小变化，在大屏幕下重置样式
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    sidebar.classList.remove('show-mobile');
+                    overlay.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+
+        // 修改现有的updateChatList函数，确保为新添加的聊天项添加事件监听器
+        const originalUpdateChatList = updateChatList;
+        updateChatList = function() {
+            originalUpdateChatList.apply(this, arguments);
+            
+            // 为新添加的聊天项添加点击事件监听器
+            if (window.innerWidth <= 768) {
+                const chatItems = document.querySelectorAll('.chat-item');
+                const sidebar = document.querySelector('.sidebar');
+                const overlay = document.querySelector('.sidebar-overlay');
+                
+                chatItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        sidebar.classList.remove('show-mobile');
+                        overlay.classList.remove('show');
+                        document.body.style.overflow = '';
+                    });
+                });
+            }
+        };
     </script>
 </body>
 </html>
