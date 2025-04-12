@@ -1102,8 +1102,15 @@
         <button class="tool-button" title="标题3" onclick="applyHeading(3)">
             <span style="font-weight: 500;font-size: 14px">H3</span>
         </button>
+        <button class="tool-button" id="calculatorButton">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M4 2h16a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2M6 4h12v6H6z"/>
+                <path d="M8 14h8M8 18h8M12 14v8M6 10v2" stroke-linecap="round"/>
+                <path d="M16 14l4-2M16 16l4-2" stroke-linecap="round"/>
+            </svg>
+        </button>
     </div>
-
+    
 <style>
     /* DevTools 样式 */
 .dev-tools-panel {
@@ -1338,6 +1345,121 @@
     background: none;
     border: none;
     padding: 4px;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
+    width: 320px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.calculator-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.close {
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #666;
+}
+
+.mode-toggle {
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.calculator {
+    display: flex;
+    flex-direction: column;
+}
+
+.display input {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.5em;
+    text-align: right;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #fff;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.btn {
+    padding: 15px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #e0e0e0;
+    transition: background-color 0.2s;
+}
+
+.btn:hover {
+    background-color: #d0d0d0;
+}
+
+.operator {
+    background-color: #ff9800;
+    color: white;
+}
+
+.operator:hover {
+    background-color: #e68a00;
+}
+
+.equals {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.equals:hover {
+    background-color: #45a049;
+}
+
+.clear {
+    background-color: #f44336;
+    color: white;
+}
+
+.clear:hover {
+    background-color: #d32f2f;
+}
+
+.sci {
+    background-color: #2196F3;
+    color: white;
+}
+
+.sci:hover {
+    background-color: #0b7dda;
 }
 </style>
 
@@ -2559,6 +2681,54 @@ function saveFile() {
                                        border: 1px solid var(--border-color);
                                        background: var(--secondary-bg);">
                 <!-- Markdown预览内容将在这里显示 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="calculatorModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="calculator-header">
+            <span class="control-btn close"></span>
+            <button id="toggleCalculatorMode" class="mode-toggle">切换科学计算器</button>
+        </div>
+        <div id="basicCalculator" class="calculator">
+            <div class="display"><input type="text" id="display" readonly></div>
+            <div class="buttons">
+                <button class="btn">7</button>
+                <button class="btn">8</button>
+                <button class="btn">9</button>
+                <button class="btn operator">+</button>
+                <button class="btn">4</button>
+                <button class="btn">5</button>
+                <button class="btn">6</button>
+                <button class="btn operator">-</button>
+                <button class="btn">1</button>
+                <button class="btn">2</button>
+                <button class="btn">3</button>
+                <button class="btn operator">*</button>
+                <button class="btn">0</button>
+                <button class="btn">.</button>
+                <button class="btn equals">=</button>
+                <button class="btn operator">/</button>
+                <button class="btn clear">C</button>
+            </div>
+        </div>
+        <div id="scientificCalculator" class="calculator" style="display: none;">
+            <div class="display"><input type="text" id="sciDisplay" readonly></div>
+            <div class="buttons">
+                <button class="btn sci">sin</button>
+                <button class="btn sci">cos</button>
+                <button class="btn sci">tan</button>
+                <button class="btn sci">log</button>
+                <button class="btn sci">ln</button>
+                <button class="btn sci">^</button>
+                <button class="btn sci">(</button>
+                <button class="btn sci">)</button>
+                <button class="btn sci">π</button>
+                <button class="btn sci">e</button>
+                <button class="btn sci">√</button>
+                <button class="btn sci">!</button>
             </div>
         </div>
     </div>
@@ -3873,6 +4043,53 @@ function createNewFile() {
             document.getElementById('drawingToolbar').style.display = 'none';
         };
     }
+    // 获取元素
+const calculatorButton = document.getElementById('calculatorButton');
+const calculatorModal = document.getElementById('calculatorModal');
+const closeButton = document.querySelector('.close');
+const toggleModeButton = document.getElementById('toggleCalculatorMode');
+const basicCalculator = document.getElementById('basicCalculator');
+const scientificCalculator = document.getElementById('scientificCalculator');
+
+// 显示计算器
+calculatorButton.addEventListener('click', () => {
+    calculatorModal.style.display = 'flex';
+});
+
+// 关闭计算器
+closeButton.addEventListener('click', () => {
+    calculatorModal.style.display = 'none';
+});
+
+// 切换计算器模式
+toggleModeButton.addEventListener('click', () => {
+    if (basicCalculator.style.display === 'none') {
+        basicCalculator.style.display = 'block';
+        scientificCalculator.style.display = 'none';
+    } else {
+        basicCalculator.style.display = 'none';
+        scientificCalculator.style.display = 'block';
+    }
+});
+const display = document.getElementById('display');
+const buttons = document.querySelectorAll('#basicCalculator .buttons button');
+
+buttons.forEach(button => {
+    button.addEventListener('click', () => {
+        const value = button.textContent;
+        if (value === 'C') {
+            display.value = '';
+        } else if (value === '=') {
+            try {
+                display.value = eval(display.value);
+            } catch {
+                display.value = 'Error';
+            }
+        } else {
+            display.value += value;
+        }
+    });
+});
 </script>
 
 <!-- 绘图工具样式 -->
