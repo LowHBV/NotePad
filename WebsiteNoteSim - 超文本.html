@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebsiteNoteSim - 现代文本</title>
-    <style>
+        <style>
         * {
             margin: 0;
             padding: 0;
@@ -951,166 +951,6 @@
 
 </style>
 </head>
-<body>
-<!-- 在body开头添加垂直按钮栏 -->
-<div id="sideToolbar" style="
-    position: fixed;
-    left: 10px;
-    top: 0;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px);
-    padding: 10px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 2;">
-
-    <button class="tool-button" style="
-                background-image: linear-gradient(to right,
-                rgba(255, 88, 51, 0.1),
-                rgba(255, 204, 51, 0.1),
-                rgba(170, 255, 51, 0.1),
-                rgba(51, 255, 88, 0.1),
-                rgba(51, 204, 255, 0.1),
-                rgba(88, 51, 255, 0.1),
-                rgba(204, 51, 255, 0.1)
-            );
-            color: var(--text-color);
-        " onclick="showAIPanel()" title="AI助手">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-            <path d="M22 21c-2.5 2.5-5 2.5-7.5 0-2.5 2.5-5 2.5-7.5 0"></path>
-        </svg>
-    </button>
-
-    <!-- 代码片段库按钮 -->
-    <button class="tool-button" onclick="showSnippetsModal()" title="代码片段库">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
-                </svg>
-            </button>
-    
-    <!-- Markdown预览按钮 -->
-    <button class="tool-button" onclick="showMarkdownPreview()" title="Markdown预览">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-            <line x1="16" y1="13" x2="8" y2="13"></line>
-            <line x1="16" y1="17" x2="8" y2="17"></line>
-            <line x1="10" y1="9" x2="8" y2="9"></line>
-                </svg>
-            </button>
-    
-    <!-- 文件统计按钮 -->
-    <button class="tool-button" onclick="showFileStats()" title="文件统计">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 20V10M12 20V4M6 20v-6"></path>
-                </svg>
-            </button>
-            <div id="sideToolbar">
-                <!-- 新增Unicode按钮 -->
-                <button class="tool-button" onclick="showUnicodePanel()" title="Unicode查看器">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M7 8a5 5 0 1 0 10 0A5 5 0 0 0 7 8z"></path>
-                        <path d="M17 14.7A7 7 0 0 0 7 14.7M7 14.7l5 5.3m-5-5.3l5 5.3"></path>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- 在sideToolbar中添加插件按钮 -->
-<button class="tool-button" id="pluginBtn" title="插件中心">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-        <circle cx="12" cy="7" r="4"></circle>
-    </svg>
-</button>
-
-<!-- 插件加载状态提示 -->
-<div id="pluginStatus" class="status-bar" style="display:none; left:20px;"></div>
-
-<!-- 插件菜单容器 -->
-<div id="pluginMenu" class="plugin-menu">
-    <div class="plugin-header">
-        <h4>已加载插件</h4>
-        <button class="reload-btn" title="重新扫描">
-            <svg width="16" height="16" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-        </button>
-    </div>
-    <div id="pluginList" class="plugin-list"></div>
-</div>
-
-<div id="sideToolbar">
-    <!-- 原有按钮保持不变 -->
-    <button class="tool-button" onclick="showDevToolsAuth()" title="DevTools++">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 1 0 1.4l-5.4 5.4a5 5 0 0 1-7.1-7.1l5.4-5.4a1 1 0 0 1 1.4 0l1.6 1.6a1 1 0 0 0 1.4 0l3.2-3.2a3.5 3.5 0 0 1 4.9 4.9l-3.2 3.2a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 1 0 1.4L14 15.6a5 5 0 0 1-7.1-7.1l1.6-1.6"></path>
-        </svg>
-    </button>
-</div>
-
-<button class="tool-button" onclick="toggleHexPreview()" title="Hex/Dec/Bin 预览">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M2 12h2M12 2v2M20 12h2M12 20v2M5.6 5.6l1.4 1.4M18.4 5.6l-1.4 1.4M5.6 18.4l1.4-1.4M18.4 18.4l-1.4-1.4"/>
-        <circle cx="12" cy="12" r="2"/>
-    </svg>
-</button>
-
-<button class="tool-button" onclick="toggleFutureNotepad()" title="FutureNotePad">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-    </svg>
-</button>
-<div id="sideToolbar2">
-        <!-- 新增格式按钮 -->
-        <button class="tool-button" title="粗体" onclick="formatSelection('bold')">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6zM6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/>
-            </svg>
-        </button>
-        
-        <button class="tool-button" title="斜体" onclick="formatSelection('italic')">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M19 4h-9M14 19H5M15 4L9 20"/>
-            </svg>
-        </button>
-        
-        <button class="tool-button" title="下划线" onclick="formatSelection('underline')">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3M4 21h16"/>
-            </svg>
-        </button>
-        
-        <button class="tool-button" title="删除线" onclick="formatSelection('strikethrough')">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M16 12H8M21 12H3M10 7l-3 5h10l-3-5"/>
-            </svg>
-        </button>
-        
-        <button class="tool-button" title="标题1" onclick="applyHeading(1)">
-            <span style="font-weight: 700;font-size: 18px">H1</span>
-        </button>
-        
-        <button class="tool-button" title="标题2" onclick="applyHeading(2)">
-            <span style="font-weight: 600;font-size: 16px">H2</span>
-        </button>
-        
-        <button class="tool-button" title="标题3" onclick="applyHeading(3)">
-            <span style="font-weight: 500;font-size: 14px">H3</span>
-        </button>
-        <button class="tool-button" id="calculatorButton">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M4 2h16a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2M6 4h12v6H6z"/>
-                <path d="M8 14h8M8 18h8M12 14v8M6 10v2" stroke-linecap="round"/>
-                <path d="M16 14l4-2M16 16l4-2" stroke-linecap="round"/>
-            </svg>
-        </button>
-    </div>
-    
 <style>
     /* DevTools 样式 */
 .dev-tools-panel {
@@ -1368,6 +1208,18 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+    /* 新增微交互动画 */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-content,
+    .context-menu,
+    .search-panel {
+        animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
 .calculator-header {
     display: flex;
     justify-content: space-between;
@@ -1400,10 +1252,10 @@
     padding: 15px;
     font-size: 1.5em;
     text-align: right;
-    border: 1px solid #ddd;
+    border: 1px solid #dddddd42;
     border-radius: 5px;
     margin-bottom: 10px;
-    background-color: #fff;
+    background-color: rgba(65, 65, 65, 0.397)
 }
 
 .buttons {
@@ -1418,7 +1270,7 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: #e0e0e0;
+    background-color: #e0e0e06c;
     transition: background-color 0.2s;
 }
 
@@ -1427,25 +1279,25 @@
 }
 
 .operator {
-    background-color: #ff9800;
+    background-color: #e68a0063;
     color: white;
 }
 
 .operator:hover {
-    background-color: #e68a00;
+    background-color: #e68a00a4;
 }
 
 .equals {
-    background-color: #4CAF50;
+    background-color: #4caf4f67;
     color: white;
 }
 
 .equals:hover {
-    background-color: #45a049;
+    background-color: #4caf4fb9;
 }
 
 .clear {
-    background-color: #f44336;
+    background-color: #f443367a;
     color: white;
 }
 
@@ -1454,15 +1306,325 @@
 }
 
 .sci {
-    background-color: #2196F3;
+    background-color: #2195f362;
     color: white;
 }
 
 .sci:hover {
     background-color: #0b7dda;
 }
+
+    /* 重命名模态框样式 */
+    .rename-section {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .input-group label {
+        color: var(--text-secondary);
+        font-size: 14px;
+    }
+    
+    .rename-input {
+        width: 100%;
+        padding: 8px 12px;
+        border-radius: 6px;
+        border: 1px solid var(--border-color);
+        background: var(--secondary-bg);
+        color: var(--text-color);
+        font-size: 14px;
+    }
+    
+    .extension-select {
+        position: relative;
+    }
+    
+    .common-extensions {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        gap: 6px;
+    }
+    
+    .common-extensions span {
+        padding: 2px 6px;
+        border-radius: 4px;
+        background: rgba(74, 144, 226, 0.1);
+        color: #4a90e2;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .common-extensions span:hover {
+        background: rgba(74, 144, 226, 0.2);
+    }
+
+    /* 脚本管理样式 */
+.script-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+}
+
+.script-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.2s;
+}
+
+.script-item:hover {
+    background: rgba(74, 144, 226, 0.1);
+}
+
+.script-info {
+    flex: 1;
+    margin-right: 15px;
+}
+
+.script-name {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.script-actions button {
+    margin-left: 8px;
+    padding: 5px 10px;
+}
+
+.script-code {
+    width: 100%;
+    height: 150px;
+    margin: 10px 0;
+    font-family: monospace;
+    background: var(--secondary-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 8px;
+}
+
+.script-input {
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+}
+
+    /* 新增音乐相关样式 */
+    .music-item {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+        background: var(--secondary-bg);
+        transition: transform 0.2s;
+        cursor: pointer;
+    }
+    
+    .music-item:hover {
+        transform: translateY(-2px);
+    }
+    
+    .album-art {
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+    }
+    
+    .music-info {
+        padding: 10px;
+    }
+    
+    .music-title {
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .music-artist {
+        font-size: 12px;
+        color: var(--text-secondary);
+    }
+    
+    .lyrics-line.active {
+        color: #4aa3ff;
+        font-weight: 500;
+    }
 </style>
 
+<body>
+    <!-- 在body开头添加垂直按钮栏 -->
+    <div id="sideToolbar" style="
+        position: fixed;
+        left: 10px;
+        top: 0;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background: rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+        padding: 10px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 2;">
+    
+        <button class="tool-button" style="
+                    background-image: linear-gradient(to right,
+                    rgba(255, 88, 51, 0.1),
+                    rgba(255, 204, 51, 0.1),
+                    rgba(170, 255, 51, 0.1),
+                    rgba(51, 255, 88, 0.1),
+                    rgba(51, 204, 255, 0.1),
+                    rgba(88, 51, 255, 0.1),
+                    rgba(204, 51, 255, 0.1)
+                );
+                color: var(--text-color);
+            " onclick="showAIPanel()" title="AI助手">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+                <path d="M22 21c-2.5 2.5-5 2.5-7.5 0-2.5 2.5-5 2.5-7.5 0"></path>
+            </svg>
+        </button>
+    
+        <!-- 代码片段库按钮 -->
+        <button class="tool-button" onclick="showSnippetsModal()" title="代码片段库">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                    </svg>
+                </button>
+        
+        <!-- Markdown预览按钮 -->
+        <button class="tool-button" onclick="showMarkdownPreview()" title="Markdown预览">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <line x1="10" y1="9" x2="8" y2="9"></line>
+                    </svg>
+                </button>
+        
+        <!-- 文件统计按钮 -->
+        <button class="tool-button" onclick="showFileStats()" title="文件统计">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 20V10M12 20V4M6 20v-6"></path>
+                    </svg>
+                </button>
+                <div id="sideToolbar">
+                    <!-- 新增Unicode按钮 -->
+                    <button class="tool-button" onclick="showUnicodePanel()" title="Unicode查看器">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 8a5 5 0 1 0 10 0A5 5 0 0 0 7 8z"></path>
+                            <path d="M17 14.7A7 7 0 0 0 7 14.7M7 14.7l5 5.3m-5-5.3l5 5.3"></path>
+                        </svg>
+                    </button>
+                </div>
+    
+                <!-- 在sideToolbar中添加插件按钮 -->
+    <button class="tool-button" id="pluginBtn" title="插件中心">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+    </button>
+    
+    <!-- 插件加载状态提示 -->
+    <div id="pluginStatus" class="status-bar" style="display:none; left:20px;"></div>
+    
+    <!-- 插件菜单容器 -->
+    <div id="pluginMenu" class="plugin-menu">
+        <div class="plugin-header">
+            <h4>已加载插件</h4>
+            <button class="reload-btn" title="重新扫描">
+                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            </button>
+        </div>
+        <div id="pluginList" class="plugin-list"></div>
+    </div>
+    
+    <div id="sideToolbar">
+        <!-- 原有按钮保持不变 -->
+        <button class="tool-button" onclick="showDevToolsAuth()" title="DevTools++">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 1 0 1.4l-5.4 5.4a5 5 0 0 1-7.1-7.1l5.4-5.4a1 1 0 0 1 1.4 0l1.6 1.6a1 1 0 0 0 1.4 0l3.2-3.2a3.5 3.5 0 0 1 4.9 4.9l-3.2 3.2a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 1 0 1.4L14 15.6a5 5 0 0 1-7.1-7.1l1.6-1.6"></path>
+            </svg>
+        </button>
+    </div>
+    
+    <button class="tool-button" onclick="toggleHexPreview()" title="Hex/Dec/Bin 预览">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M2 12h2M12 2v2M20 12h2M12 20v2M5.6 5.6l1.4 1.4M18.4 5.6l-1.4 1.4M5.6 18.4l1.4-1.4M18.4 18.4l-1.4-1.4"/>
+            <circle cx="12" cy="12" r="2"/>
+        </svg>
+    </button>
+    
+    <button class="tool-button" onclick="toggleFutureNotepad()" title="FutureNotePad">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        </svg>
+    </button>
+    <div id="sideToolbar2">
+            <!-- 新增格式按钮 -->
+            <button class="tool-button" title="粗体" onclick="formatSelection('bold')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6zM6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/>
+                </svg>
+            </button>
+            
+            <button class="tool-button" title="斜体" onclick="formatSelection('italic')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M19 4h-9M14 19H5M15 4L9 20"/>
+                </svg>
+            </button>
+            
+            <button class="tool-button" title="下划线" onclick="formatSelection('underline')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3M4 21h16"/>
+                </svg>
+            </button>
+            
+            <button class="tool-button" title="删除线" onclick="formatSelection('strikethrough')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M16 12H8M21 12H3M10 7l-3 5h10l-3-5"/>
+                </svg>
+            </button>
+            
+            <button class="tool-button" title="标题1" onclick="applyHeading(1)">
+                <span style="font-weight: 700;font-size: 18px">H1</span>
+            </button>
+            
+            <button class="tool-button" title="标题2" onclick="applyHeading(2)">
+                <span style="font-weight: 600;font-size: 16px">H2</span>
+            </button>
+            
+            <button class="tool-button" title="标题3" onclick="applyHeading(3)">
+                <span style="font-weight: 500;font-size: 14px">H3</span>
+            </button>
+            <button id="calculatorButton" class="tool-button">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M4 2h16a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2M6 4h12v6H6z"/>
+                    <path d="M8 14h8M8 18h8M12 14v8M6 10v2" stroke-linecap="round"/>
+                    <path d="M16 14l4-2M16 16l4-2" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>    
+    </body>
 <script>
 // 插件系统核心逻辑
 class PluginSystem {
@@ -1737,27 +1899,36 @@ window.plugins = new PluginSystem();
         background: rgba(0, 0, 0, 0.1);
     }
 
-    /* 添加新样式 */
-.conversion-warning {
-    color: #ff6b6b;
-    font-size: 12px;
-    margin-top: 8px;
-    display: none;
-}
+        /* 添加新样式 */
+        .conversion-warning {
+            color: #ff6b6b;
+            font-size: 12px;
+            margin-top: 8px;
+            display: none;
+        }
 
-.number-input {
-    width: 100%;
-    padding: 6px;
-    border-radius: 4px;
-    border: 1px solid var(--border-color);
-    background: var(--secondary-bg);
-    color: var(--text-color);
-    margin-bottom: 8px;
-}
+        .number-input {
+            width: 100%;
+            padding: 6px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            background: var(--secondary-bg);
+            color: var(--text-color);
+            margin-bottom: 8px;
+        }
 
-
+            /* 添加编辑相关样式 */
+            .form-actions {
+                display: flex;
+                gap: 10px;
+                margin-top: 15px;
+            }
+            
+            .editing {
+                background: rgba(74, 144, 226, 0.15) !important;
+                box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.3);
+            }
 </style>
-
 <script>
     // 修改DOMContentLoaded事件处理函数
     // 删除原来添加到菜单栏的代码，不再向菜单栏添加这些按钮
@@ -2241,11 +2412,14 @@ function saveFile() {
             <div class="toolbar-section">
                 <div class="toolbar-title">编程语言</div>
                 <select class="font-control" id="languageSelect">
-                    <option value="code-plaintext">plaintext</option>
+                    <option value="code-plaintext">Plaintext</option>
                     <option value="code-javascript">JavaScript</option>
                     <option value="code-python">Python</option>
+                    <option value="code-java">Java</option>                    
                     <option value="code-css">CSS</option>
                     <option value="code-html">HTML</option>
+                    <option value="code-php">PHP</option>
+                    <option value="code-markdown">Markdown</option>
                 </select>
             </div>
             <!-- 新增行号显示开关 -->
@@ -2257,17 +2431,213 @@ function saveFile() {
                 </label>
             </div>
             <!-- 新增拼写检查开关 -->
-            <label class="toggle-switch" style="margin-top: 15px;">
-                <input type="checkbox" id="spellCheckToggle" onchange="toggleSpellCheck()">
-                <span class="toggle-slider"></span>
-                <span style="color: var(--text-color); margin-left: 8px;">拼写检查</span>
-            </label>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+            <span class="toggle-label">拼写检查</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="spellCheckToggle" onchange="toggleSpellCheck()">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
             <!-- 新增画笔颜色选择 -->
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
                 <span class="toggle-label">画笔颜色</span>
                 <input type="color" id="penColorPicker" value="#000000" style="width: 40px; height: 25px; background: var(--secondary-bg); border: 1px solid var(--border-color);"/>
             </div>
         </div>
+        <!-- 在侧边工具栏添加按钮 -->
+        <div class="toolbar-section">
+            <div class="toolbar-title">高级</div>
+            <button class="button" onclick="toggleScriptPanel()">管理JS脚本</button>
+        </div>
+
+        <!-- 脚本管理面板 -->
+        <div id="scriptModal" class="modal-overlay" style="display: none;">
+            <div class="modal-content" style="width: 600px;">
+                <div class="modal-header">
+                    <button onclick="toggleScriptPanel()" class="control-btn close"></button>
+                </div>
+        
+                <div class="script-list" id="scriptList"></div>
+        
+                <div class="script-form">
+                    <h4>添加新脚本</h4>
+                    <input type="text" id="scriptName" placeholder="脚本名称" class="script-input">
+                    <textarea id="scriptCode" placeholder="输入JavaScript代码" class="script-code"></textarea>
+                    <button onclick="saveScript()" class="button">保存脚本</button>
+                </div>
+            </div>
+        </div>
+        <div id="editScriptModal" class="modal-overlay" style="display: none;">
+            <div class="modal-content" style="width: 600px;">
+                <div class="modal-header">
+                    <h3>编辑脚本</h3>
+                    <button onclick="closeEditModal()" class="control-btn close"></button>
+                </div>
+                
+                <div class="script-form">
+                    <input type="text" id="editScriptName" placeholder="脚本名称" class="script-input">
+                    <textarea id="editScriptCode" placeholder="输入JavaScript代码" class="script-code"></textarea>
+                    <div class="form-actions">
+                        <button onclick="updateScript()" class="button primary">保存更改</button>
+                        <button onclick="closeEditModal()" class="button">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+<script>
+// 脚本管理逻辑
+let scripts = JSON.parse(localStorage.getItem('userScripts')) || [];
+
+function toggleScriptPanel() {
+    const panel = document.getElementById('scriptModal');
+    panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
+    if(panel.style.display === 'flex') refreshScriptList();
+}
+
+function refreshScriptList() {
+    const list = document.getElementById('scriptList');
+    list.innerHTML = scripts.map((script, index) => `
+        <div class="script-item">
+            <div class="script-info">
+                <div class="script-name">${script.name}</div>
+                <div class="script-meta">创建于 ${new Date(script.created).toLocaleString()}</div>
+            </div>
+            <div class="script-actions">
+                <button class="button" onclick="executeScript(${index})">执行</button>
+                <button class="button danger" onclick="deleteScript(${index})">删除</button>
+            </div>
+        </div>
+    `).join('') || '<div class="no-scripts">暂无自定义脚本</div>';
+}
+
+function saveScript() {
+    const name = document.getElementById('scriptName').value.trim();
+    const code = document.getElementById('scriptCode').value.trim();
+    
+    if(!name || !code) return alert('名称和代码不能为空');
+    
+    scripts.push({
+        id: Date.now(),
+        name,
+        code,
+        created: new Date().toISOString()
+    });
+    
+    localStorage.setItem('userScripts', JSON.stringify(scripts));
+    refreshScriptList();
+    clearForm();
+}
+
+        function deleteScript(index) {
+            if(confirm('确定删除这个脚本吗？')) {
+                scripts.splice(index, 1);
+                localStorage.setItem('userScripts', JSON.stringify(scripts));
+                refreshScriptList();
+            }
+        }
+
+        function executeScript(index) {
+            try {
+                const script = scripts[index];
+                const fn = new Function(script.code);
+                fn();
+                showStatus(`脚本 "${script.name}" 执行成功`);
+            } catch(e) {
+                showError(`脚本执行错误: ${e.message}`);
+            }
+        }
+
+        function clearForm() {
+            document.getElementById('scriptName').value = '';
+            document.getElementById('scriptCode').value = '';
+        }
+
+        // 初始化加载
+        document.addEventListener('DOMContentLoaded', refreshScriptList);
+
+        // 添加编辑相关状态
+let editingIndex = -1;
+
+// 修改脚本项渲染逻辑
+function refreshScriptList() {
+    const list = document.getElementById('scriptList');
+    list.innerHTML = scripts.map((script, index) => `
+        <div class="script-item" data-index="${index}" ondblclick="openEditModal(${index})">
+            <div class="script-info">
+                <div class="script-name">${script.name}</div>
+                <div class="script-meta">
+                    创建于 ${new Date(script.created).toLocaleString()}
+                    ${script.modified ? `| 修改于 ${new Date(script.modified).toLocaleString()}` : ''}
+                </div>
+            </div>
+            <div class="script-actions">
+                <button class="button" onclick="executeScript(${index})">执行</button>
+                <button class="button danger" onclick="deleteScript(${index})">删除</button>
+            </div>
+        </div>
+    `).join('') || '<div class="no-scripts">暂无自定义脚本</div>';
+}
+
+// 添加双击处理函数
+function openEditModal(index) {
+    editingIndex = index;
+    const script = scripts[index];
+    
+    document.getElementById('editScriptName').value = script.name;
+    document.getElementById('editScriptCode').value = script.code;
+    
+    // 高亮正在编辑的项
+    document.querySelectorAll('.script-item').forEach(item => {
+        item.classList.remove('editing');
+    });
+    document.querySelector(`[data-index="${index}"]`).classList.add('editing');
+    
+    document.getElementById('editScriptModal').style.display = 'flex';
+}
+
+function closeEditModal() {
+    document.getElementById('editScriptModal').style.display = 'none';
+    document.querySelectorAll('.script-item').forEach(item => {
+        item.classList.remove('editing');
+    });
+    editingIndex = -1;
+}
+
+// 更新脚本函数
+function updateScript() {
+    const name = document.getElementById('editScriptName').value.trim();
+    const code = document.getElementById('editScriptCode').value.trim();
+    
+    if (!name || !code) {
+        showError('名称和代码不能为空');
+        return;
+    }
+    
+    if (editingIndex >= 0) {
+        scripts[editingIndex] = {
+            ...scripts[editingIndex],
+            name,
+            code,
+            modified: new Date().toISOString()
+        };
+        
+        localStorage.setItem('userScripts', JSON.stringify(scripts));
+        refreshScriptList();
+        closeEditModal();
+        showStatus('脚本更新成功');
+    }
+}
+
+// 在删除函数中添加状态重置
+function deleteScript(index) {
+    if(confirm('确定删除这个脚本吗？')) {
+        scripts.splice(index, 1);
+        localStorage.setItem('userScripts', JSON.stringify(scripts));
+        refreshScriptList();
+        if(index === editingIndex) closeEditModal();
+    }
+}
+    </script>
         <!-- 在工具栏添加Unicode工具 -->
 <div class="toolbar-section">
     <div class="toolbar-title">Unicode工具</div>
@@ -2397,7 +2767,16 @@ function saveFile() {
                     <span class="toggle-slider"></span>
                 </label>
             </div>
-
+            <!--    Music    -->
+            <div style="display: flex; justify-content: space-between; margin: 10px 0;">
+                <button class="button" onclick="showMusicLibrary()" style="flex:1;">音乐库</button>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="musicToggle">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <input type="file" id="musicUpload" multiple accept="audio/*" style="display:none;">
+            <button class="button" onclick="document.getElementById('musicUpload').click()">导入音乐</button>
             <!-- 新增用户名输入 -->
             <input type="text" id="userNameInput"
                    style="width: 100%; padding: 6px; background: var(--secondary-bg);
@@ -2411,10 +2790,21 @@ function saveFile() {
                    placeholder="头像URL">
             <button class="button" onclick="updateAvatar()" style="margin-top: 10px;">更新头像</button>
             <button class="button import-btn" onclick="importPhoto()" style="margin-top: 10px;">头像选择</button>
+            <!--    占位符    -->
+            <div class="toolbar-title">自定义占位符</div>
+            <div style="margin-bottom: 10px;">
+                <input type="text" id="customPlaceholder"
+                       style="width: 100%; padding: 6px; background: var(--secondary-bg);
+                              border: 1px solid var(--border-color); color: var(--text-color);"
+                       placeholder="输入自定义占位符文字">
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button class="button" onclick="setCustomPlaceholder()" style="flex:1;">应用</button>
+                <button class="button" onclick="resetPlaceholder()" style="flex:1;">重置</button>
+            </div>
         </div>
         <div class="toolbar-section">
             <div class="toolbar-title">搜索功能</div>
-            <!-- 改为开关形式 -->
             <div style="display: flex; align-items: center; justify-content: space-between;">
                 <span class="toggle-label">搜索面板</span>
                 <label class="toggle-switch">
@@ -2423,6 +2813,24 @@ function saveFile() {
                 </label>
             </div>
         </div>
+
+<!-- 音乐库模态框 -->
+    <div class="modal-overlay" id="musicLibraryModal">
+        <div class="modal-content" style="width: 800px;">
+            <div class="search-panel-header">
+                <h3>音乐库</h3>
+                <div class="search-panel-close" onclick="closeMusicLibrary()">×</div>
+            </div>
+            <div id="musicList" style="
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 15px;
+                max-height: 60vh;
+                overflow-y: auto;
+                padding: 15px;
+            "></div>
+        </div>
+    </div>
 <!-- 右侧信息卡片 -->
 <div class="file-info-card">
     <div class="card-header">文件概览</div>
@@ -2443,6 +2851,36 @@ function saveFile() {
                     <label>修改：</label>
                     <span id="cardFileModified">-</span>
             </div>
+        </div>
+    </div>
+</div>
+<div class="file-info-card" style="top: 650px;">
+    <div class="card-header">正在播放</div>
+    <div id="musicCard">
+        <div id="albumArt" style="
+            width: 100%;
+            height: 100px;
+            background: #333;
+            border-radius: 8px;
+            margin: 10px 0;
+            overflow: hidden;
+        "></div>
+        <div id="nowPlaying" style="text-align: center;">
+            <div id="songTitle" style="font-weight: 500;"></div>
+            <div id="songArtist" style="font-size: 14px; color: var(--text-secondary);"></div>
+        </div>
+        <div id="lyricsContainer" style="
+            height: 50px;
+            overflow-y: auto;
+            margin: 10px 0;
+            font-size: 14px;
+            line-height: 1.4;
+        "></div>
+        <audio id="audioPlayer" hidden></audio>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button class="button" onclick="playPrevious()">⏮</button>
+            <button class="button" onclick="togglePlay()" id="playBtn">⏵</button>
+            <button class="button" onclick="playNext()">⏭</button>
         </div>
     </div>
 </div>
@@ -4160,9 +4598,7 @@ buttons.forEach(button => {
     let autoSaveEnabled = true;
     const autoSaveToggle = document.getElementById('autoSaveToggle');
 
-    // 新增IDE模式状态
-    let ideModeEnabled = false;
-    const ideModeToggle = document.getElementById('ideModeToggle');
+
 
     // 新增本地文件操作逻辑
     let fileHandle = null;
@@ -7263,19 +7699,6 @@ function updateLineStats() {
 
     // 添加点击事件监听器
     document.addEventListener("DOMContentLoaded", function() {
-    const newNotePadButton = document.getElementById('newNotePadButton');
-    
-    if(newNotePadButton) {
-        newNotePadButton.addEventListener('click', function() {
-            window.location.href = 'Window NotePad.html';
-        });
-    } else {
-        console.error('错误：未找到 HTML IDE 按钮元素');
-    }
-});
-
-    // 添加点击事件监听器
-    document.addEventListener("DOMContentLoaded", function() {
     const AiChatButton = document.getElementById('AiChatButton');
     
     if(AiChatButton) {
@@ -7287,32 +7710,30 @@ function updateLineStats() {
     }
 });
 </script>
-    <!-- SecureBox按钮 -->
-    <button id="AiChatButton" style="bottom: 168px;"class="bottom-left-button">AIChatSuper Beta</button>
+    <!-- AI按钮 -->
+    <button id="AiChatButton" class="bottom-left-button">AIChatSuper Beta</button>
         <!-- SecureBox按钮 -->
-        <button id="secureboxButton" style="bottom: 119px;"class="bottom-left-button">SecureBox Pro</button>
-    <!-- HTML IDE 按钮 -->
-    <button id="newNotePadButton" class="bottom-left-button">Window NotePad Beta</button>
+        <button id="secureboxButton" style="bottom: 119px;" class="bottom-left-button">SecureBox Pro</button>
     <!-- HTML IDE 按钮 -->
     <button id="htmlIdeButton" class="bottom-left-button_color">HTML IDE Beta</button>
 </body>
 <style>
 /*    左下Button     */
 .bottom-left-button {
-            position: fixed;
-            bottom: 70px;
-            left: 20px;
-            padding: 10px 17px;
-            border-radius: 8px;
-            background: rgba(61, 61, 61, 0.411);
-            color: var(--text-color);
-            border: 1px solid rgba(255, 255, 255, 0.712);
-            cursor: pointer;
-            z-index: 1000;
-            background-size: 200% 100%;
-            opacity: 0.9; /* 设置整体透明度为 0.8 (可以调整) */
-            backdrop-filter: blur(50px); /*  可以添加轻微的模糊效果，增强半透明感 */
-        }
+    position: fixed;
+    bottom: 70px;
+    left: 20px;
+    padding: 10px 17px;
+    border-radius: 8px;
+    background: rgba(61, 61, 61, 0.411);
+    color: var(--text-color);
+    border: 1px solid rgba(255, 255, 255, 0.712);
+    cursor: pointer;
+    z-index: 1000;
+    background-size: 200% 100%;
+    opacity: 0.9; /* 设置整体透明度为 0.8 (可以调整) */
+    backdrop-filter: blur(50px); /*  可以添加轻微的模糊效果，增强半透明感 */
+}
  
 
 .bottom-left-button:hover {
@@ -7434,81 +7855,451 @@ function confirmRename() {
     }
 
     localStorage.setItem('editorFiles', JSON.stringify(files));
-    initFileList();
-    showStatus('重命名成功');
-    closeRenameModal();
+        initFileList();
+        showStatus('重命名成功');
+        closeRenameModal();
+    }
+
+    // 扩展名快速选择
+    function setExtension(ext) {
+        document.getElementById('newExtensionInput').value = ext;
+    }
+
+    // 关闭模态框
+    function closeRenameModal() {
+        document.getElementById('renameModal').style.display = 'none';
+    }
+
+    // 签名字段显示控制
+        document.getElementById('signatureCheckbox').addEventListener('change', function(e) {
+        document.getElementById('signatureInput').style.display = e.target.checked ? 'block' : 'none';
+    });
+
+    // 搜索功能
+    function search() {
+        document.getElementById('searchModal').style.display = 'flex';
+    }
+
+    function closeSearch() {
+        document.getElementById('searchModal').style.display = 'none';
+    }
+
+    function findNext() {
+        const text = editor.value;
+        const search = document.getElementById('searchInput').value;
+        const index = text.indexOf(search);
+        if(index > -1) {
+            editor.focus();
+            editor.setSelectionRange(index, index + search.length);
+        }
+    }
+
+    // 自定义占位符功能
+function setCustomPlaceholder() {
+    const placeholder = document.getElementById('customPlaceholder').value;
+    if (placeholder) {
+        document.getElementById('editor').placeholder = placeholder;
+        // 保存到localStorage以便下次加载时使用
+        localStorage.setItem('customPlaceholder', placeholder);
+        showStatus('占位符已更新');
+    } else {
+        showError('请输入占位符文字');
+    }
 }
 
-// 扩展名快速选择
-function setExtension(ext) {
-    document.getElementById('newExtensionInput').value = ext;
+// 使用预设模板
+function usePlaceholderTemplate(template) {
+    document.getElementById('customPlaceholder').value = template;
+    setCustomPlaceholder();
 }
 
-// 关闭模态框
-function closeRenameModal() {
-    document.getElementById('renameModal').style.display = 'none';
+// 重置为默认占位符
+function resetPlaceholder() {
+    document.getElementById('editor').placeholder = '开始输入...';
+    document.getElementById('customPlaceholder').value = '';
+    localStorage.removeItem('customPlaceholder');
+    showStatus('已重置为默认占位符');
 }
 
-// 签名字段显示控制
-document.getElementById('signatureCheckbox').addEventListener('change', function(e) {
-    document.getElementById('signatureInput').style.display = e.target.checked ? 'block' : 'none';
+// 页面加载时恢复保存的自定义占位符
+document.addEventListener('DOMContentLoaded', function() {
+    const savedPlaceholder = localStorage.getItem('customPlaceholder');
+    if (savedPlaceholder) {
+        document.getElementById('editor').placeholder = savedPlaceholder;
+        document.getElementById('customPlaceholder').value = savedPlaceholder;
+    }
+});
+
+
+    // 音乐播放器逻辑
+    let musicLibrary = JSON.parse(localStorage.getItem('musicLibrary')) || [];
+    let currentTrack = 0;
+    const audio = document.getElementById('audioPlayer');
+    
+    // 初始化音乐库
+    document.getElementById('musicUpload').addEventListener('change', function(e) {
+        Array.from(e.target.files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                parseID3(e.target.result).then(metadata => {
+                    musicLibrary.push({
+                        title: metadata.title || file.name,
+                        artist: metadata.artist || '未知艺术家',
+                        album: metadata.album || '',
+                        cover: metadata.cover,
+                        url: URL.createObjectURL(file),
+                        lyrics: []
+                    });
+                    updateMusicLibrary();
+                    localStorage.setItem('musicLibrary', JSON.stringify(musicLibrary));
+                });
+            };
+            reader.readAsArrayBuffer(file);
+        });
+    });
+    
+    // 解析音乐元数据
+    async function parseID3(arrayBuffer) {
+        const tags = await ID3.load(arrayBuffer);
+        return {
+            title: tags.title,
+            artist: tags.artist,
+            album: tags.album,
+            cover: tags.picture ? URL.createObjectURL(new Blob([tags.picture.data], 
+                {type: tags.picture.type})) : null
+        };
+    }
+    
+    // 更新音乐库显示
+    function updateMusicLibrary() {
+        const container = document.getElementById('musicList');
+        container.innerHTML = musicLibrary.map((track, i) => `
+            <div class="music-item" ondblclick="playTrack(${i})">
+                ${track.cover ? `
+                    <img src="${track.cover}" class="album-art">
+                ` : `<div class="album-art" style="background: #444;"></div>`}
+                <div class="music-info">
+                    <div class="music-title">${track.title}</div>
+                    <div class="music-artist">${track.artist}</div>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // 播放控制
+    function playTrack(index) {
+        currentTrack = index;
+        audio.src = musicLibrary[index].url;
+        audio.play();
+        updateNowPlaying();
+        document.getElementById('playBtn').textContent = '⏸';
+    }
+    
+    function togglePlay() {
+        if (audio.paused) {
+            audio.play();
+            document.getElementById('playBtn').textContent = '⏸';
+        } else {
+            audio.pause();
+            document.getElementById('playBtn').textContent = '⏵';
+        }
+    }
+    
+    function playNext() {
+        currentTrack = (currentTrack + 1) % musicLibrary.length;
+        playTrack(currentTrack);
+    }
+    
+    function playPrevious() {
+        currentTrack = (currentTrack - 1 + musicLibrary.length) % musicLibrary.length;
+        playTrack(currentTrack);
+    }
+    
+    // 更新播放信息
+    function updateNowPlaying() {
+        const track = musicLibrary[currentTrack];
+        document.getElementById('songTitle').textContent = track.title;
+        document.getElementById('songArtist').textContent = track.artist;
+        document.getElementById('albumArt').style.backgroundImage = 
+            track.cover ? `url(${track.cover})` : 'linear-gradient(45deg, #333, #444)';
+    }
+    
+    // 歌词处理
+    audio.addEventListener('timeupdate', () => {
+        const lines = document.querySelectorAll('.lyrics-line');
+        const currentTime = audio.currentTime;
+        
+        lines.forEach(line => {
+            const time = parseFloat(line.dataset.time);
+            if (time <= currentTime && time + 2 > currentTime) {
+                line.classList.add('active');
+                line.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                line.classList.remove('active');
+            }
+        });
+    });
+    
+    // 显示/关闭音乐库
+    function showMusicLibrary() {
+        document.getElementById('musicLibraryModal').style.display = 'flex';
+        updateMusicLibrary();
+    }
+    
+    function closeMusicLibrary() {
+        document.getElementById('musicLibraryModal').style.display = 'none';
+    }
+    
+    // 初始化
+    updateMusicLibrary();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/id3js@1.0.0/lib/id3.min.js"></script>
+<style>
+
+.CodeMirror {
+    height: 100% !important; /* 继承容器高度 */
+    width: 100% !important;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 15px;
+    border-radius: 6px;
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+}
+
+@media (max-width: 1300px) {
+    .editor-container {
+        margin: 20px 30px;
+        max-width: calc(100% - 60px);
+    }
+}
+
+/* 添加横向滚动条 */
+.CodeMirror-scroll {
+    max-width: 100%;
+    overflow-x: auto !important;
+}
+
+
+
+/* 行号栏优化 */
+.CodeMirror-linenumbers {
+    padding-right: 15px;
+    background: var(--line-number-bg);
+}
+
+/* 折叠按钮样式 */
+.CodeMirror-foldgutter {
+    width: 15px;
+}
+
+.CodeMirror-ide {
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* 代码折叠 */
+.CodeMirror-foldmarker {
+    background: rgba(74, 144, 226, 0.2);
+    border-radius: 2px;
+    padding: 0 4px;
+}
+
+/* 括号匹配 */
+.CodeMirror-matchingbracket {
+    background: rgba(255, 215, 0, 0.3) !important;
+    border-bottom: 2px solid #ffd700;
+}
+
+/* 当前行高亮 */
+.CodeMirror-activeline-background {
+    background: rgba(74, 144, 226, 0.1) !important;
+}
+
+</style>
+        <!-- CodeMirror 核心依赖 -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/codemirror.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/theme/material-darker.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/codemirror.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/addon/edit/closebrackets.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/addon/edit/matchbrackets.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/addon/fold/foldcode.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/addon/fold/foldgutter.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/addon/fold/foldgutter.min.css" /> 
+        
+        <!-- 多语言模式支持 -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/mode/htmlmixed/htmlmixed.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/mode/xml/xml.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/mode/css/css.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/mode/javascript/javascript.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/mode/php/php.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/mode/markdown/markdown.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/mode/python/python.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/mode/java/java.min.js"></script>
+<script>
+// 修改 IDE 模式切换逻辑
+const ideModeToggle = document.getElementById('ideModeToggle');
+let codeMirrorEditor = null;
+
+ideModeToggle.addEventListener('change', function(e) {
+    if (e.target.checked) {
+        enableIDEMode();
+    } else {
+        disableIDEMode();
+    }
+});
+
+function enableIDEMode() {
+    // 保存当前内容
+    const content = editor.value;
+    
+    // 销毁旧编辑器
+    if(codeMirrorEditor) {
+        codeMirrorEditor.toTextArea();
+    }
+    
+    // 初始化 CodeMirror
+    codeMirrorEditor = CodeMirror.fromTextArea(editor, {
+        mode: getCurrentLanguageMode(),
+        theme: 'material-darker',
+        coverGutterNextToScrollbar: true,
+        lineNumbers: true,
+        foldGutter: true,
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+        autoCloseBrackets: true,
+        matchBrackets: true,
+        indentUnit: 4,
+        extraKeys: {
+            "Ctrl-Space": "autocomplete",
+            "Ctrl-/": "toggleComment"
+        },
+        value: content
+    });
+    
+    // 同步内容变化
+    codeMirrorEditor.on('change', (cm) => {
+        editor.value = cm.getValue();
+    });
+    
+    // 隐藏原生编辑器
+    editor.style.display = 'none';
+}
+
+function disableIDEMode() {
+    if(codeMirrorEditor) {
+        const content = codeMirrorEditor.getValue();
+        codeMirrorEditor.toTextArea();
+        codeMirrorEditor = null;
+        editor.value = content;
+        editor.style.display = 'block';
+    }
+}
+
+// 动态语言模式映射
+function getCurrentLanguageMode() {
+    const format = currentFile?.format || 'txt';
+    const mapping = {
+        'javascript': 'javascript',
+        'html': 'htmlmixed',
+        'css': 'css',
+        'php': 'php',
+        'python': 'python',
+        'markdown': 'markdown',
+        'java': 'text/x-java',
+        'cpp': 'text/x-c++src'
+    };
+    return mapping[format] || 'text/plain';
+}
+
+// 监听语言选择变化
+document.getElementById('languageSelect').addEventListener('change', function() {
+    if(codeMirrorEditor && ideModeToggle.checked) {
+        const mode = this.value.replace('code-','');
+        codeMirrorEditor.setOption('mode', mode);
+    }
 });
 </script>
-
+<!-- 浏览器自带控件样式修改 -->
 <style>
-/* 重命名模态框样式 */
-.rename-section {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    ::selection {
+  background: #ffffff1a;
+  color: rgb(0, 0, 0);
 }
 
-.input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+input[type="checkbox"],
+input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 2px solid #666;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
 }
 
-.input-group label {
-    color: var(--text-secondary);
-    font-size: 14px;
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+  background: #007bff8c url("checkmark.png") no-repeat center;
 }
 
-.rename-input {
-    width: 100%;
-    padding: 8px 12px;
-    border-radius: 6px;
-    border: 1px solid var(--border-color);
-    background: var(--secondary-bg);
-    color: var(--text-color);
-    font-size: 14px;
+input[type="radio"] {
+  border-radius: 50%; /* 圆形 */
 }
 
-.extension-select {
-    position: relative;
+/* 基础圆形光标样式 */
+:root {
+  --cursor-size: 16px;
+  --cursor-outline-size: 24px;
+  --cursor-color: rgba(74, 163, 255, 0.9); /* 主色调蓝 */
+  --cursor-outline: rgba(255, 255, 255, 0.3); /* 毛玻璃外圈 */
+  --cursor-click-effect: rgba(255, 255, 255, 0.7); /* 点击动效 */
 }
 
-.common-extensions {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    gap: 6px;
+/* 深色/浅色模式适配 */
+[data-theme="light"] {
+  --cursor-color: rgba(25, 113, 194, 0.9);
+  --cursor-outline: rgba(0, 0, 0, 0.1);
+  --cursor-click-effect: rgba(0, 0, 0, 0.2);
 }
-
-.common-extensions span {
-    padding: 2px 6px;
-    border-radius: 4px;
-    background: rgba(74, 144, 226, 0.1);
-    color: #4a90e2;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
+/* 主光标容器 */
+body {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="%234aa3ff" fill-opacity="0.9"/><circle cx="12" cy="12" r="11" stroke="white" stroke-opacity="0.3" stroke-width="1" fill="none"/></svg>') 12 12, auto;
 }
-
-.common-extensions span:hover {
-    background: rgba(74, 144, 226, 0.2);
+/* 文本输入状态 */
+input, textarea, [contenteditable] {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect x="11" y="2" width="2" height="20" fill="%234aa3ff"/><circle cx="12" cy="12" r="4" fill="%234aa3ff" fill-opacity="0.3"/></svg>') 12 12, text;
+}
+/* 链接/按钮悬停状态 */
+a, button, .button, [role="button"] {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="%234aa3ff" stroke-width="2"/><circle cx="12" cy="12" r="6" fill="%234aa3ff" fill-opacity="0.5"/></svg>') 12 12, pointer;
+}
+/* 拖拽状态 */
+[draggable="true"] {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="%23ffcc33"/><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2"/></svg>') 12 12, grab;
+}
+/* 禁用状态 */
+:disabled, .disabled {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="%23999999"/><path d="M6 6l12 12" stroke="white" stroke-width="2"/></svg>') 12 12, not-allowed;
+}
+/* 加载状态 */
+.wait, .loading {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="%234aa3ff" stroke-width="2" stroke-dasharray="15 10"/></svg>') 12 12, wait;
+}
+/* 精确选择状态（如工具面板） */
+.precise {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2" fill="%234aa3ff"/><circle cx="12" cy="12" r="6" fill="none" stroke="%234aa3ff" stroke-width="1"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="%234aa3ff" stroke-width="1.5"/></svg>') 12 12, crosshair;
+}
+/* 点击动画效果 */
+@keyframes cursorClick {
+  0% { transform: scale(1); opacity: 0; }
+  50% { transform: scale(1.5); opacity: 0.7; }
+  100% { transform: scale(2); opacity: 0; }
+}
+/* 悬停放大效果 */
+a:hover, button:hover {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><circle cx="14" cy="14" r="12" fill="none" stroke="%234aa3ff" stroke-width="2"/><circle cx="14" cy="14" r="7" fill="%234aa3ff" fill-opacity="0.5"/></svg>') 14 14, pointer;
 }
 </style>
 </html>
