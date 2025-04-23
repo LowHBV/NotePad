@@ -611,7 +611,7 @@
             border-radius: 12px;
             padding: 15px;
             box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-            z-index: 1000;
+            z-index: 10;
             cursor: move;
             user-select: none;
             backdrop-filter: blur(20px) saturate(180%);
@@ -740,10 +740,16 @@
             }
         }
 
+        /* 按钮  */
+
         .save-btn {
             background: var(--save-green); /* 使用 --save-green 变量 */
             border-color: var(--save-green); /* 使用 --save-green 变量 */
             color: white;
+        }
+
+        .save-btn:hover {
+            background: rgba(35, 219, 18, 0.363);
         }
 
         /* 新增导入按钮样式 */
@@ -762,6 +768,15 @@
         
         .new-btn:hover {
             background: rgba(255, 193, 7, 0.5); /* 悬停时更深的黄色 */
+        }
+
+        .log-btn {
+            background: rgba(156, 7, 255, 0.3); /* 黄色背景 */
+            border-color: rgba(135, 7, 255, 0.5); /* 黄色边框 */
+        }
+
+        .new-btn:hover {
+            background: rgba(255, 210, 7, 0.5); /* 悬停时更深的黄色 */
         }
 
         /* 信息卡片样式 */
@@ -1463,6 +1478,250 @@
         color: #4aa3ff;
         font-weight: 500;
     }
+
+    /* 添加高亮样式 */
+    #editor[data-show-whitespace="true"] {
+        background-image: linear-gradient(to right, 
+            rgba(74, 163, 255, 0.1) 1px, 
+            transparent 1px);
+        background-size: 20px 1em;
+    }
+/* 控制字符卡片样式 */
+.control-char-card {
+    position: relative;
+    display: inline-block;
+    background: rgba(255, 76, 76, 0.15);
+    border-radius: 3px;
+    padding: 0 2px;
+    cursor: help;
+}
+
+.control-char-card::after {
+    content: attr(data-name);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--secondary-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 1000;
+}
+
+.control-char-card:hover::after {
+    opacity: 1;
+}
+
+/* 同时显示空格时的处理 */
+.show-whitespace .control-char-card {
+    background: none;
+    padding: 0;
+}
+
+/* 新增样式 */
+.tool-group {
+    position: relative;
+}
+
+.sub-tool-list {
+    position: absolute;
+    left: 110%;
+    top: 0;
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    min-width: 150px;
+}
+
+.tool-group:hover .sub-tool-list,
+.tool-group:focus-within .sub-tool-list {
+    display: flex;
+    animation: slideIn 0.2s ease;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .sub-tool-list {
+        left: auto;
+        right: 110%;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    
+    .tool-button {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* 新增按钮特效 */
+.tool-button:active {
+    transform: scale(0.95);
+}
+
+.tool-button::after {
+    content: attr(title);
+    position: absolute;
+    left: 120%;
+    background: var(--secondary-bg);
+    color: var(--text-color);
+    padding: 6px 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+}
+
+.tool-button:hover::after {
+    opacity: 1;
+}
+
+.search-engine-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: var(--secondary-bg);
+    border-radius: 8px;
+}
+
+.engine-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px;
+    height: calc(70vh - 100px);
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.search-engine-frame {
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.engine-header {
+    padding: 10px;
+    background: rgba(74, 144, 226, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.engine-iframe {
+    width: 100%;
+    height: 300px;
+    border: none;
+    background: white;
+}
+
+.engine-controls button {
+    padding: 4px 8px;
+    margin-left: 5px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.engine-controls button:hover {
+    background: var(--hover-bg);
+}
+
+/* 输入框优化 */
+#globalSearchInput {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: var(--bg);
+  border-radius: calc(var(--radius) * 0.5);
+  color: var(--text);
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+#globalSearchInput:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* 添加按钮状态样式 */
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: rgba(255,255,255,0.05) !important;
+}
+
+.button:disabled:hover {
+    background: rgba(255,255,255,0.05) !important;
+}
+
+/* 按钮动画 */
+.button svg {
+    transition: transform 0.2s;
+}
+
+.button:not(:disabled):hover svg {
+    transform: scale(1.1);
+}
+
+.editor-container {
+  position: relative;
+  width: 100%;
+  height: 100%; /* 关键属性 */
+}
+
+/* 强制Monaco填充容器 */
+.monaco-editor {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+}
+
+/* 缩略图样式优化 */
+#minimapContainer .monaco-editor {
+    background: transparent !important;
+    transform: scale(0.2);
+    transform-origin: top left;
+    width: 500% !important;
+    height: 500% !important;
+}
+
+#minimapContainer .monaco-editor .lines-content {
+    opacity: 0.6;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    #minimapContainer {
+        width: 60px;
+    }
+    
+    .monaco-editor {
+        right: 60px !important;
+    }
+}
 </style>
 
 <body>
@@ -1542,10 +1801,38 @@
             <circle cx="12" cy="7" r="4"></circle>
         </svg>
     </button>
+
+    <div class="tool-group">
+        <button class="tool-button" id="moreToolsBtn">
+            <svg width="20" height="20"><circle cx="10" cy="10" r="8"/></svg>
+        </button>
+        <div class="sub-tool-list">
+            <button class="tool-button" onclick="showSearchPanel()" title="多引擎搜索">
+                <svg width="20" height="20">
+                    <path d="M10 2a8 8 0 1 0 5.3 14l4.7 4.7-1.4 1.4-4.7-4.7A8 8 0 0 0 10 2zm0 14a6 6 0 1 1 0-12 6 6 0 0 1 0 12z"/>
+                </svg>
+            </button>
+            <div class="search-panel" id="multiSearchPanel" style="display:none; width: 80vw; height: 70vh;">
+                <div class="search-panel-header">
+                    <div>多引擎搜索</div>
+                    <div class="search-panel-close" onclick="closeSearchPanel()">×</div>
+                </div>
+                <div class="search-panel-content">
+                    <div class="search-engine-controls">
+                        <input type="text" id="globalSearchInput" 
+                               placeholder="输入搜索内容或网址..."
+                               style="width: calc(100% - 120px); margin-right: 10px;">
+                        <button class="button" onclick="performGlobalSearch()">搜索</button>
+                        <button class="button" onclick="addSearchEngine()">+ 添加引擎</button>
+                    </div>
+                    <div class="engine-container" id="engineContainer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!-- 插件加载状态提示 -->
     <div id="pluginStatus" class="status-bar" style="display:none; left:20px;"></div>
-    
     <!-- 插件菜单容器 -->
     <div id="pluginMenu" class="plugin-menu">
         <div class="plugin-header">
@@ -1579,6 +1866,7 @@
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
         </svg>
     </button>
+
     <div id="sideToolbar2">
             <!-- 新增格式按钮 -->
             <button class="tool-button" title="粗体" onclick="formatSelection('bold')">
@@ -1616,7 +1904,9 @@
             <button class="tool-button" title="标题3" onclick="applyHeading(3)">
                 <span style="font-weight: 500;font-size: 14px">H3</span>
             </button>
-            <button id="calculatorButton" class="tool-button">
+            <button class="tool-button" title="折叠左侧" onclick="toggleSidebar()" id="sidebarToggleButton">左侧</button>
+            <button class="tool-button" title="折叠右侧" onclick="toggleToolbar()" id="toolbarToggleButton">右侧</button>
+            <button id="calculatorButton" title="计算器" class="tool-button">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path d="M4 2h16a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2M6 4h12v6H6z"/>
                     <path d="M8 14h8M8 18h8M12 14v8M6 10v2" stroke-linecap="round"/>
@@ -2336,9 +2626,9 @@ function saveFile() {
                 <button class="button import-btn" onclick="importFile()">导入</button>
                 <button class="button new-btn" onclick="exportFile()" id="modal-overlay" class="export-file">导出</button>
                 <button class="button save-btn" onclick="saveFile()" id="saveBtn">保存</button>
-                <button class="button" onclick="toggleSidebar()" id="sidebarToggleButton">折叠左侧</button>
-                <button class="button" onclick="toggleToolbar()" id="toolbarToggleButton">折叠右侧</button>
-                <button class="button" onclick="showAuditLog()" style="margin-left: auto;">审计日志</button>
+                <button class="button" id="undoBtn" title="回退 (Ctrl+Z)" onclick="undoChange()" disabled>回退</button>
+                <button class="button" id="redoBtn" title="前进 (Ctrl+Y)" onclick="redoChange()" disabled>前进</button>
+                <button class="button log-btn" onclick="showAuditLog()" style="margin-left: auto;">审计日志</button>
             </div>
             <button class="button logout-button" onclick="logout()">退出登录</button>
         </div>
@@ -2362,6 +2652,17 @@ function saveFile() {
                     </select>
                 </div>
             </div>
+            <div id="minimapContainer" style="
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: 100px;
+                background: var(--secondary-bg);
+                border-left: 1px solid var(--border-color);
+                display: none;
+                overflow: hidden;
+            "></div>
             
             <!-- 原有行号容器和编辑器保持不变 -->
             <div id="lineNumbers" style="
@@ -2388,7 +2689,6 @@ function saveFile() {
             <div class="status-bar" id="status">已保存</div>
         </div>
     </div>
-
     <!-- 右侧工具栏 -->
     <div class="toolbar">
         <div class="toolbar-section">
@@ -2403,7 +2703,7 @@ function saveFile() {
             </div>
             <!-- IDE模式开关 -->
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-                <span class="toggle-label">IDE模式</span>
+                <span class="toggle-label">ColorIDE模式</span>
                 <label class="toggle-switch">
                     <input type="checkbox" id="ideModeToggle">
                     <span class="toggle-slider"></span>
@@ -2422,11 +2722,44 @@ function saveFile() {
                     <option value="code-markdown">Markdown</option>
                 </select>
             </div>
-            <!-- 新增行号显示开关 -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                <span class="toggle-label">MonacoIDE模式</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="monacoToggle" onchange="toggleMonacoMode()">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <!-- 添加语言选择器到工具栏 -->
+            <div class="toolbar-section">
+            <div class="toolbar-title">编程语言</div>
+            <select id="languageSelector" class="font-control" onchange="setLanguage(this.value)">
+                <option value="auto">自动检测</option>
+                <option value="plaintext">纯文本</option>
+                <option value="javascript">JavaScript</option>
+                <option value="python">Python</option>
+                <option value="html">HTML</option>
+                <option value="css">CSS</option>
+            </select>
+        </div>
+            <!-- 显示开关 -->
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
                 <span class="toggle-label">显示行号</span>
                 <label class="toggle-switch">
                     <input type="checkbox" id="lineNumberToggle">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                <span class="toggle-label">显示空格</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="showWhitespaceToggle">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                <span class="toggle-label">显示控制字符</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="showControlCharsToggle">
                     <span class="toggle-slider"></span>
                 </label>
             </div>
@@ -2449,7 +2782,6 @@ function saveFile() {
             <div class="toolbar-title">高级</div>
             <button class="button" onclick="toggleScriptPanel()">管理JS脚本</button>
         </div>
-
         <!-- 脚本管理面板 -->
         <div id="scriptModal" class="modal-overlay" style="display: none;">
             <div class="modal-content" style="width: 600px;">
@@ -2645,7 +2977,6 @@ function deleteScript(index) {
     <button class="button" onclick="convertToUnicode()" style="margin-top:5px;">转为Unicode</button>
     <button class="button" onclick="convertFromUnicode()" style="margin-top:5px;">解析Unicode</button>
 </div>
-    <!-- 在原有的Unicode工具区块中添加以下代码 -->
 <div class="toolbar-section">
     <div class="toolbar-title">进制转换工具</div>
     <div style="display: flex; gap: 8px; margin-bottom: 10px;">
@@ -2747,6 +3078,15 @@ function deleteScript(index) {
         </div>
         <div class="toolbar-section">
             <div class="toolbar-title">用户设置</div>
+            <!-- XML操作按钮 -->
+<div class="toolbar-section">
+    <div class="toolbar-title">数据管理</div>
+    <button class="button" onclick="saveToXML()">导出全部数据</button>
+    <button class="button" onclick="document.getElementById('xmlFileInput').click()" 
+            style="margin-top:8px;">导入XML数据</button>
+    <input type="file" id="xmlFileInput" accept=".xml" style="display:none;">
+</div>
+
             <!-- 新增背景设置 -->
             <div style="margin-bottom: 10px;">
                 <input type="file" id="bgFileInput" accept="image/*,video/*" 
@@ -2767,6 +3107,7 @@ function deleteScript(index) {
                     <span class="toggle-slider"></span>
                 </label>
             </div>
+            <div class="toolbar-title">自定义音乐</div>
             <!--    Music    -->
             <div style="display: flex; justify-content: space-between; margin: 10px 0;">
                 <button class="button" onclick="showMusicLibrary()" style="flex:1;">音乐库</button>
@@ -4211,25 +4552,6 @@ function showFileInfoModal() {
 
     document.getElementById('fileInfoModal').style.display = 'flex';
 }
-
-// 在以下位置调用更新函数：
-// 1. 文件打开时
-function openFile(fileId) {
-    // ...原有逻辑...
-    updateFileCard();
-}
-
-// 2. 文件保存时
-function saveFile() {
-    // ...原有逻辑...
-    updateFileCard();
-}
-
-// 3. 文件创建时
-function createNewFile() {
-    // ...原有逻辑...
-    updateFileCard();
-}
     
     // 增强绘图工具
     function initDrawingTools() {
@@ -4842,7 +5164,9 @@ buttons.forEach(button => {
         initFileList();
         showStatus('已创建新文件');
         logAction('CREATE', fileName);
+        updateFileCard();
     }
+    
 
     // 密码哈希函数
     async function hashPassword(password) {
@@ -4869,7 +5193,25 @@ buttons.forEach(button => {
                 showError('密码错误');
                 return; // 密码错误时终止操作
             }
+
+            if(file) {
+            currentFile = file;
+            loadFileContent(file.content);
+            }
+
+            updateFileCard();
         }
+
+        if (file) {
+        currentFile = file;
+        editHistory.initFileHistory(fileId);
+        editor.value = file.content;
+        editHistory.currentFileHistories[fileId] = {
+            stack: [file.content],
+            index: 0
+        };
+        editHistory.updateButtonStates();
+    }
 
         // 只有通过验证才会执行打开操作
         if (file) {
@@ -5035,6 +5377,7 @@ buttons.forEach(button => {
         showStatus('已保存');
         lastSavedContent = editor.value;
         document.title = `${currentFile.name} - 现代文本编辑器`;
+        updateFileCard();
     }
 
     // 新增退出功能
@@ -7616,6 +7959,7 @@ function updateLineStats() {
         <span>UTF-8</span>
     `;
 }
+
 //NotePad 
 
     // 新增背景设置逻辑
@@ -7712,8 +8056,6 @@ function updateLineStats() {
 </script>
     <!-- AI按钮 -->
     <button id="AiChatButton" class="bottom-left-button">AIChatSuper Beta</button>
-        <!-- SecureBox按钮 -->
-        <button id="secureboxButton" style="bottom: 119px;" class="bottom-left-button">SecureBox Pro</button>
     <!-- HTML IDE 按钮 -->
     <button id="htmlIdeButton" class="bottom-left-button_color">HTML IDE Beta</button>
 </body>
@@ -8052,7 +8394,650 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 初始化
     updateMusicLibrary();
+
+    // 添加状态管理
+let showWhitespace = false;
+let originalContent = '';
+
+// 初始化监听
+document.getElementById('showWhitespaceToggle').addEventListener('change', toggleWhitespaceDisplay);
+document.getElementById('editor').addEventListener('input', handleEditorInput);
+
+// 切换显示状态
+function toggleWhitespaceDisplay() {
+    showWhitespace = !showWhitespace;
+    updateEditorDisplay();
+}
+
+// 处理输入事件
+function handleEditorInput(e) {
+    if(showWhitespace) {
+        originalContent = e.target.value.replace(/·/g, ' ');
+    } else {
+        originalContent = e.target.value;
+    }
+    updateEditorDisplay();
+}
+
+// 更新编辑器显示
+function updateEditorDisplay() {
+    const editor = document.getElementById('editor');
+    if(showWhitespace) {
+        editor.value = originalContent.replace(/ /g, '·');
+    } else {
+        editor.value = originalContent;
+    }
+}
+
+// 修改保存逻辑
+function saveFile() {
+    if(currentFile) {
+        currentFile.content = originalContent; // 使用原始内容保存
+        localStorage.setItem('editorFiles', JSON.stringify(files));
+        showStatus('已保存');
+    }
+}
+
+// 初始化加载内容时
+function loadFileContent(content) {
+    originalContent = content;
+    updateEditorDisplay();
+}
+
+// 控制字符映射表
+const controlChars = new Map([
+    ['\u202A', 'LRE'], ['\u202B', 'RLE'], ['\u202C', 'PDF'],
+    ['\u202D', 'LRO'], ['\u202E', 'RLO'], ['\u2066', 'LRI'],
+    ['\u2067', 'RLI'], ['\u2068', 'FSI'], ['\u2069', 'PDI']
+]);
+
+// 初始化监听
+document.getElementById('showControlCharsToggle').addEventListener('change', updateControlCharsDisplay);
+
+// 主处理函数
+function updateControlCharsDisplay() {
+    const showControl = document.getElementById('showControlCharsToggle').checked;
+    const editor = document.getElementById('editor');
+    
+    if(showControl) {
+        const content = processControlChars(editor.value);
+        editor.innerHTML = content;
+    } else {
+        editor.innerHTML = restoreOriginalContent(editor.textContent);
+    }
+}
+
+// 处理控制字符
+function processControlChars(text) {
+    return text.split('').map(char => {
+        if(controlChars.has(char)) {
+            return `<span class="control-char-card" data-name="${controlChars.get(char)}">${showWhitespace ? '·' : char}</span>`;
+        }
+        return char;
+    }).join('');
+}
+
+// 恢复原始内容
+function restoreOriginalContent(processedText) {
+    return processedText.replace(/<span class="control-char-card.*?<\/span>/g, char => {
+        return char.match(/>(.*?)</)[1];
+    });
+}
+
+// 修改输入处理
+document.getElementById('editor').addEventListener('input', (e) => {
+    if(document.getElementById('showControlCharsToggle').checked) {
+        const cursorPos = saveCursorPosition();
+        updateControlCharsDisplay();
+        restoreCursorPosition(cursorPos);
+    }
+});
+
+// 光标位置处理
+function saveCursorPosition() {
+    const selection = window.getSelection();
+    return {
+        anchorNode: selection.anchorNode,
+        anchorOffset: selection.anchorOffset
+    };
+}
+
+function restoreCursorPosition(pos) {
+    const selection = window.getSelection();
+    selection.collapse(pos.anchorNode, pos.anchorOffset);
+}
+
+// 修改保存逻辑
+function saveFile() {
+    if(currentFile) {
+        currentFile.content = document.getElementById('editor').textContent;
+        localStorage.setItem('editorFiles', JSON.stringify(files));
+        showStatus('已保存');
+    }
+}
+
+// 初始化编辑器为contenteditable
+document.getElementById('editor').contentEditable = true;
+
+// 通用工具函数
+function insertTextAtCursor(text) {
+    const editor = document.getElementById('editor');
+    const start = editor.selectionStart;
+    const end = editor.selectionEnd;
+    
+    editor.value = editor.value.slice(0, start) + 
+                   text + 
+                   editor.value.slice(end);
+    
+    editor.selectionStart = editor.selectionEnd = start + text.length;
+    editor.focus();
+}
+
+function createFloatingPanel(title, items) {
+    const panel = document.createElement('div');
+    panel.className = 'floating-panel';
+    panel.innerHTML = `
+        <div class="panel-header">${title}</div>
+        <div class="panel-content">
+            ${items.map(item => `
+                <button class="symbol-btn" onclick="insertTextAtCursor('${item}')">
+                    ${item}
+                </button>
+            `).join('')}
+        </div>
+    `;
+    
+    // 添加样式和定位逻辑
+    panel.style.position = 'fixed';
+    panel.style.background = 'var(--secondary-bg)';
+    panel.style.border = '1px solid var(--border-color)';
+    panel.style.borderRadius = '8px';
+    panel.style.padding = '12px';
+    panel.style.boxShadow = '0 8px 24px rgba(0,0,0,0.1)';
+    
+    // 点击外部关闭
+    setTimeout(() => {
+        const handler = e => {
+            if(!panel.contains(e.target)) {
+                panel.remove();
+                document.removeEventListener('click', handler);
+            }
+        };
+        document.addEventListener('click', handler);
+    });
+    
+    return panel;
+}
+
+// 搜索引擎配置
+const searchEngines = {
+    'Google': 'https://www.google.com/search?q=',
+    'Bing': 'https://www.bing.com/search?q=',
+    'DuckDuckGo': 'https://duckduckgo.com/?q=',
+    'GitHub': 'https://github.com/search?q=',
+    'YouTube': 'https://www.youtube.com/results?search_query='
+};
+
+// 显示搜索面板
+function showSearchPanel() {
+    const panel = document.getElementById('multiSearchPanel');
+    panel.style.display = 'block';
+    initDrag(panel);
+    loadEngines();
+}
+
+// 关闭搜索面板
+function closeSearchPanel() {
+    document.getElementById('multiSearchPanel').style.display = 'none';
+}
+
+// 初始化拖拽
+function initDrag(element) {
+    let isDragging = false;
+    let currentX = 0;
+    let currentY = 0;
+    let initialX = 0;
+    let initialY = 0;
+
+    element.querySelector('.search-panel-header').addEventListener('mousedown', dragStart);
+    
+    function dragStart(e) {
+        initialX = e.clientX - currentX;
+        initialY = e.clientY - currentY;
+        isDragging = true;
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', dragEnd);
+    }
+
+    function drag(e) {
+        if (isDragging) {
+            e.preventDefault();
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
+            element.style.left = currentX + 'px';
+            element.style.top = currentY + 'px';
+        }
+    }
+
+    function dragEnd() {
+        isDragging = false;
+        document.removeEventListener('mousemove', drag);
+        document.removeEventListener('mouseup', dragEnd);
+    }
+}
+
+// 加载搜索引擎
+function loadEngines() {
+    const container = document.getElementById('engineContainer');
+    container.innerHTML = Object.entries(searchEngines).map(([name, url], index) => `
+        <div class="search-engine-frame">
+            <div class="engine-header">
+                <span>${name}</span>
+                <div class="engine-controls">
+                    <button onclick="refreshEngine(${index})">↻</button>
+                    <button onclick="removeEngine(${index})">×</button>
+                </div>
+            </div>
+            <iframe class="engine-iframe" id="engine${index}" 
+                    data-url="${url}"></iframe>
+        </div>
+    `).join('');
+}
+
+// 全局搜索
+function performGlobalSearch() {
+    const query = document.getElementById('globalSearchInput').value;
+    const frames = document.querySelectorAll('.engine-iframe');
+    
+    frames.forEach(frame => {
+        const searchUrl = frame.dataset.url + encodeURIComponent(query);
+        frame.src = searchUrl;
+    });
+}
+
+// 添加新引擎
+function addSearchEngine() {
+    const engineName = prompt('输入搜索引擎名称：');
+    const baseUrl = prompt('输入搜索URL（用{q}代替查询参数）：');
+    
+    if (engineName && baseUrl) {
+        searchEngines[engineName] = baseUrl;
+        loadEngines();
+    }
+}
+
+// 刷新引擎
+function refreshEngine(index) {
+    const frame = document.getElementById(`engine${index}`);
+    frame.src = frame.src;
+}
+
+// 移除引擎
+function removeEngine(index) {
+    const engineName = Object.keys(searchEngines)[index];
+    delete searchEngines[engineName];
+    loadEngines();
+}
+
+// 在编辑器选中文本时自动填充
+document.getElementById('editor').addEventListener('mouseup', function() {
+    const selected = window.getSelection().toString().trim();
+    if (selected) {
+        document.getElementById('globalSearchInput').value = selected;
+    }
+});
+
+// 历史记录管理
+const editHistory = {
+    maxSteps: 100, // 最大历史记录数
+    currentFileHistories: {}, // 按文件ID存储历史记录
+    pointer: -1, // 当前历史位置指针
+
+    initFileHistory(fileId) {
+        if (!this.currentFileHistories[fileId]) {
+            this.currentFileHistories[fileId] = {
+                stack: [],
+                index: -1
+            };
+        }
+    },
+
+    recordChange(content) {
+        if (!currentFile) return;
+        const history = this.currentFileHistories[currentFile.id];
+        
+        // 如果在历史中间进行了新编辑，清除后续记录
+        if (history.index < history.stack.length - 1) {
+            history.stack = history.stack.slice(0, history.index + 1);
+        }
+
+        history.stack.push(content);
+        history.index++;
+        
+        // 保持最大历史长度
+        if (history.stack.length > this.maxSteps) {
+            history.stack.shift();
+            history.index--;
+        }
+
+        this.updateButtonStates();
+    },
+
+    undo() {
+        const history = this.currentFileHistories[currentFile.id];
+        if (history.index > 0) {
+            history.index--;
+            return history.stack[history.index];
+        }
+        return null;
+    },
+
+    redo() {
+        const history = this.currentFileHistories[currentFile.id];
+        if (history.index < history.stack.length - 1) {
+            history.index++;
+            return history.stack[history.index];
+        }
+        return null;
+    },
+
+    updateButtonStates() {
+        const history = currentFile ? this.currentFileHistories[currentFile.id] : null;
+        document.getElementById('undoBtn').disabled = !history || history.index <= 0;
+        document.getElementById('redoBtn').disabled = !history || history.index >= history.stack.length - 1;
+    }
+};
+
+// 修改编辑器输入监听
+let isUndoRedo = false;
+document.getElementById('editor').addEventListener('input', () => {
+    if (!isUndoRedo && currentFile) {
+        editHistory.recordChange(editor.value);
+    }
+    isUndoRedo = false;
+});
+
+// 实现撤销/重做功能
+function undoChange() {
+    if (!currentFile) return;
+    const content = editHistory.undo();
+    if (content !== null) {
+        isUndoRedo = true;
+        editor.value = content;
+        editHistory.updateButtonStates();
+        showStatus(`已回退到 ${formatTimeDelta()}`);
+    }
+}
+
+function redoChange() {
+    if (!currentFile) return;
+    const content = editHistory.redo();
+    if (content !== null) {
+        isUndoRedo = true;
+        editor.value = content;
+        editHistory.updateButtonStates();
+        showStatus(`已重做到 ${formatTimeDelta()}`);
+    }
+}
+
+// 时间格式化辅助函数
+function formatTimeDelta() {
+    const now = new Date();
+    const delta = now - currentFile.lastModified;
+    const minutes = Math.floor(delta / 60000);
+    return `${minutes} 分钟前`;
+}
+
+// 添加快捷键支持
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && !e.metaKey) {
+        if (e.key === 'z') {
+            e.preventDefault();
+            undoChange();
+        } else if (e.key === 'y') {
+            e.preventDefault();
+            redoChange();
+        }
+    }
+});
+
+// Monaco编辑器实例
+let isMonacoMode = false;
+let monacoEditor = null;
+
+function initRequire() {
+  require.config({
+    paths: { 
+      'vs': 'https://cdn.bootcdn.net/ajax/libs/monaco-editor/0.20.0/min/vs'
+    }
+  });
+}
+
+// 初始化Monaco
+function initMonaco() {
+    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' }});
+    require(['vs/editor/editor.main'], function() {
+        const container = document.getElementById('editor');
+        container.style.display = 'none';
+        monacoEditor = monaco.editor.create(container.parentElement, {
+            value: container.value,
+            language: 'html',
+            theme: 'vs-dark',
+                automaticLayout: true,
+                minimap: { enabled: true },
+                fontSize: 14,
+                lineNumbers: 'on',
+                roundedSelection: true,
+                scrollBeyondLastLine: false,
+                readOnly: false,
+                contextmenu: true,
+                wordWrap: 'on',
+                wrappingIndent: 'indent',
+                suggestOnTriggerCharacters: true,
+                acceptSuggestionOnEnter: 'on',
+                tabCompletion: 'on',
+                wordBasedSuggestions: true,
+                suggestSelection: 'recentlyUsed',
+                autoClosingBrackets: 'always',
+                autoClosingQuotes: 'always',
+                autoIndent: 'full',
+                formatOnPaste: true,
+                formatOnType: true,
+                dragAndDrop: true,
+                renderWhitespace: 'selection',
+                renderControlCharacters: true,
+                fontLigatures: true,
+                cursorBlinking: 'smooth',
+                cursorStyle: 'line',
+                cursorSmoothCaretAnimation: true,
+                cursorWidth: 2,
+                bracketPairColorization: {
+                enabled: true,
+                independentColorPoolPerBracketType: true
+                }
+        });
+        
+        // 同步内容变化
+        monacoEditor.onDidChangeModelContent(() => {
+            container.value = monacoEditor.getValue();
+        });
+        
+        // 显示缩略图
+        document.getElementById('minimapContainer').style.display = 'block';
+        initMinimap();
+    });
+}
+
+// 初始化缩略图
+function initMinimap() {
+    require(['vs/editor/editor.main'], function() {
+        const minimap = monaco.editor.create(document.getElementById('minimapContainer'), {
+            value: monacoEditor.getValue(),
+            language: 'html',
+            readOnly: true,
+            theme: monacoEditor._themeService._theme.themeName,
+            scrollBeyondLastLine: false,
+            minimap: { enabled: false },
+            scrollbar: { vertical: 'hidden', horizontal: 'hidden' },
+            renderLineHighlight: 'none',
+            lineNumbers: 'off',
+            glyphMargin: false,
+            folding: false,
+            lineDecorationsWidth: 0,
+            lineNumbersMinChars: 0,
+            overviewRulerBorder: false,
+            hideCursorInOverviewRuler: true,
+            overviewRulerLanes: 0
+        });
+        
+        // 同步滚动
+        monacoEditor.onDidScrollChange(e => {
+            minimap.setScrollTop(e.scrollTop * 
+                (minimap.getContentHeight() / monacoEditor.getContentHeight()));
+        });
+        
+        // 同步内容
+        monacoEditor.onDidChangeModelContent(() => {
+            minimap.setValue(monacoEditor.getValue());
+        });
+    });
+}
+
+// 切换模式函数
+async function toggleMonacoMode() {
+  const checkbox = document.getElementById('monacoToggle');
+  try {
+    if (checkbox.checked) {
+      await initMonaco();
+      document.getElementById('sideToolbar2').style.display = 'none';
+      isMonacoMode = true;
+    } else {
+      if (monacoEditor) {
+        document.getElementById('editor').value = monacoEditor.getValue();
+        monacoEditor.dispose();
+        monacoEditor = null;
+      }
+      document.getElementById('sideToolbar2').style.display = '';
+      document.getElementById('editor').style.display = '';
+      isMonacoMode = false;
+    }
+  } catch (error) {
+    console.error('模式切换失败:', error);
+    checkbox.checked = false;
+  }
+}
+
+// 保存偏好设置
+function saveEditorModePreference() {
+    localStorage.setItem('editorMode', isMonacoMode ? 'monaco' : 'default');
+}
+
+// 初始化时检查偏好
+function checkEditorModePreference() {
+    const mode = localStorage.getItem('editorMode');
+    if (mode === 'monaco') {
+        document.getElementById('monacoToggle').click();
+    }
+}
+
+// 配置支持的语言列表
+const languageConfig = {
+    'javascript': {
+        id: 'javascript',
+        extensions: ['.js', '.mjs', '.cjs'],
+        aliases: ['JavaScript', 'js']
+    },
+    'python': {
+        id: 'python',
+        extensions: ['.py'],
+        aliases: ['Python', 'py']
+    },
+    'html': {
+        id: 'html',
+        extensions: ['.html', '.htm'],
+        aliases: ['HTML']
+    },
+    'css': {
+        id: 'css',
+        extensions: ['.css'],
+        aliases: ['CSS']
+    }
+};
+
+// 初始化语言注册
+function registerLanguages() {
+    for (const lang of Object.values(languageConfig)) {
+        monaco.languages.register({
+            id: lang.id,
+            extensions: lang.extensions,
+            aliases: lang.aliases
+        });
+    }
+}
+
+// 当前语言状态管理
+let currentLanguage = 'plaintext';
+
+// 切换语言核心方法
+async function setLanguage(languageId) {
+    if (!monaco.languages.getLanguages().some(l => l.id === languageId)) {
+        console.warn(`未支持的语言: ${languageId}`);
+        return;
+    }
+
+    try {
+        // 动态加载语言特性
+        await loadLanguageFeatures(languageId);
+        
+        const model = monacoEditor.getModel();
+        monaco.editor.setModelLanguage(model, languageId);
+        currentLanguage = languageId;
+        
+        // 更新UI状态
+        updateLanguageIndicator(languageId);
+        saveLanguagePreference(languageId);
+    } catch (error) {
+        console.error(`语言切换失败: ${error}`);
+        fallbackToPlainText();
+    }
+}
+
+// 动态加载语言特性
+async function loadLanguageFeatures(languageId) {
+    switch (languageId) {
+        case 'javascript':
+            await import('monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution');
+            break;
+        case 'python':
+            await import('monaco-editor/esm/vs/basic-languages/python/python.contribution');
+            break;
+        // 添加其他语言...
+    }
+}
+
+// 根据文件扩展名检测语言
+function detectLanguage(filename) {
+    const extension = filename.slice(filename.lastIndexOf('.'));
+    for (const lang of Object.values(languageConfig)) {
+        if (lang.extensions.includes(extension)) {
+            return lang.id;
+        }
+    }
+    return 'plaintext';
+}
+
+// 在文件打开时自动设置语言
+function openFile(file) {
+    const detectedLang = detectLanguage(file.name);
+    setLanguage(detectedLang);
+}
+
+// 初始化
+document.addEventListener('DOMContentLoaded', () => {
+  initRequire();
+});
 </script>
+<script src="https://cdn.bootcdn.net/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/id3js@1.0.0/lib/id3.min.js"></script>
 <style>
 
@@ -8219,6 +9204,204 @@ document.getElementById('languageSelect').addEventListener('change', function() 
         codeMirrorEditor.setOption('mode', mode);
     }
 });
+
+// XML数据结构定义
+const xmlStructure = {
+    root: 'AppData',
+    structure: {
+        files: {
+            file: [
+                'id', 'name', 'content', 'type', 'created', 'modified'
+            ]
+        },
+        settings: [
+            'theme', 'fontSize', 'fontFamily', 'autoSave', 
+            'background', 'musicEnabled'
+        ],
+        logs: {
+            entry: [
+                'timestamp', 'type', 'message'
+            ]
+        },
+        musicLibrary: {
+            track: [
+                'title', 'artist', 'album', 'cover', 'url'
+            ]
+        },
+        flowcharts: {
+            flowchart: [
+                'id', 'name', 'nodes', 'connections'
+            ]
+        }
+    }
+};
+
+// 生成XML字符串
+function generateXML() {
+    const data = {
+        files: getAllFileData(),
+        settings: getUserSettings(),
+        logs: getAuditLogs(),
+        musicLibrary: getMusicLibrary(),
+        flowcharts: getFlowchartsData()
+    };
+
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<${xmlStructure.root}>\n`;
+
+    // 递归生成XML节点
+    function buildNodes(obj, structure, indent) {
+        let xml = '';
+        for(const key in structure) {
+            if(Array.isArray(structure[key])) {
+                if(obj[key]) {
+                    xml += `${indent}<${key}>\n`;
+                    xml += `${indent}  ${obj[key]}\n`;
+                    xml += `${indent}</${key}>\n`;
+                }
+            } else if(typeof structure[key] === 'object') {
+                if(Array.isArray(obj[key])) {
+                    xml += `${indent}<${key}>\n`;
+                    obj[key].forEach(item => {
+                        xml += buildNodes(item, structure[key], indent+'  ');
+                    });
+                    xml += `${indent}</${key}>\n`;
+                } else {
+                    xml += buildNodes(obj[key], structure[key], indent);
+                }
+            }
+        }
+        return xml;
+    }
+
+    xml += buildNodes(data, xmlStructure.structure, '  ');
+    xml += `</${xmlStructure.root}>`;
+    return xml;
+}
+
+// 保存为XML文件
+function saveToXML() {
+    const xmlData = generateXML();
+    const blob = new Blob([xmlData], {type: 'application/xml'});
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `appdata_${new Date().toISOString().slice(0,10)}.xml`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+// 解析XML文件
+async function parseXML(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(e.target.result, "application/xml");
+            
+            if(xmlDoc.getElementsByTagName("parsererror").length > 0) {
+                return reject(new Error("Invalid XML format"));
+            }
+
+            resolve({
+                files: parseXMLNode(xmlDoc, 'files'),
+                settings: parseXMLNode(xmlDoc, 'settings'),
+                logs: parseXMLNode(xmlDoc, 'logs'),
+                musicLibrary: parseXMLNode(xmlDoc, 'musicLibrary'),
+                flowcharts: parseXMLNode(xmlDoc, 'flowcharts')
+            });
+        };
+        reader.readAsText(file);
+    });
+}
+
+// XML节点解析器
+function parseXMLNode(xmlDoc, nodeName) {
+    const nodes = xmlDoc.getElementsByTagName(nodeName);
+    if(!nodes.length) return null;
+    
+    const result = [];
+    for(let node of nodes[0].children) {
+        const item = {};
+        for(let prop of node.children) {
+            item[prop.tagName] = prop.textContent;
+        }
+        result.push(item);
+    }
+    return result;
+}
+
+// 初始化文件输入监听
+document.getElementById('xmlFileInput').addEventListener('change', async (e) => {
+    try {
+        const xmlData = await parseXML(e.target.files[0]);
+        await loadAllData(xmlData);
+        showStatus('数据导入成功');
+    } catch(err) {
+        showError(`数据导入失败: ${err.message}`);
+    }
+});
+
+// 加载所有数据
+async function loadAllData(data) {
+    // 加载文件数据
+    if(data.files) {
+        localStorage.setItem('editorFiles', JSON.stringify(data.files));
+    }
+    
+    // 加载设置
+    if(data.settings) {
+        data.settings.forEach(setting => {
+            localStorage.setItem(`setting_${setting.key}`, setting.value);
+        });
+    }
+    
+    // 加载音乐库
+    if(data.musicLibrary) {
+        localStorage.setItem('musicLibrary', JSON.stringify(data.musicLibrary));
+    }
+    
+    // 加载流程图数据
+    if(data.flowcharts) {
+        localStorage.setItem('flowcharts', JSON.stringify(data.flowcharts));
+    }
+    
+    // 加载日志
+    if(data.logs) {
+        const existingLogs = JSON.parse(localStorage.getItem('auditLogs') || []);
+        localStorage.setItem('auditLogs', JSON.stringify([...existingLogs, ...data.logs]));
+    }
+}
+
+// 辅助函数：从localStorage获取数据
+function getAllFileData() {
+    return JSON.parse(localStorage.getItem('editorFiles')) || [];
+}
+
+function getUserSettings() {
+    return {
+        theme: localStorage.getItem('theme') || 'dark',
+        fontSize: localStorage.getItem('fontSize') || '16px',
+        fontFamily: localStorage.getItem('fontFamily') || 'system-ui',
+        autoSave: localStorage.getItem('autoSave') === 'true',
+        background: localStorage.getItem('background') || '',
+        musicEnabled: localStorage.getItem('musicEnabled') === 'true'
+    };
+}
+
+function getAuditLogs() {
+    return JSON.parse(localStorage.getItem('auditLogs')) || [];
+}
+
+function getMusicLibrary() {
+    return JSON.parse(localStorage.getItem('musicLibrary')) || [];
+}
+
+function getFlowchartsData() {
+    return JSON.parse(localStorage.getItem('flowcharts')) || [];
+}
 </script>
 <!-- 浏览器自带控件样式修改 -->
 <style>
@@ -8248,6 +9431,18 @@ input[type="radio"] {
   border-radius: 50%; /* 圆形 */
 }
 
+    /* 优化输入控件 */
+    input, select {
+        background: var(--secondary-bg);
+        border: var(--glass-border);
+        transition: var(--transition-fast);
+    }
+
+    input:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px var(--line-number-active);
+    }
+
 /* 基础圆形光标样式 */
 :root {
   --cursor-size: 16px;
@@ -8263,43 +9458,5 @@ input[type="radio"] {
   --cursor-outline: rgba(0, 0, 0, 0.1);
   --cursor-click-effect: rgba(0, 0, 0, 0.2);
 }
-/* 主光标容器 */
-body {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="%234aa3ff" fill-opacity="0.9"/><circle cx="12" cy="12" r="11" stroke="white" stroke-opacity="0.3" stroke-width="1" fill="none"/></svg>') 12 12, auto;
-}
-/* 文本输入状态 */
-input, textarea, [contenteditable] {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect x="11" y="2" width="2" height="20" fill="%234aa3ff"/><circle cx="12" cy="12" r="4" fill="%234aa3ff" fill-opacity="0.3"/></svg>') 12 12, text;
-}
-/* 链接/按钮悬停状态 */
-a, button, .button, [role="button"] {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="%234aa3ff" stroke-width="2"/><circle cx="12" cy="12" r="6" fill="%234aa3ff" fill-opacity="0.5"/></svg>') 12 12, pointer;
-}
-/* 拖拽状态 */
-[draggable="true"] {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="%23ffcc33"/><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2"/></svg>') 12 12, grab;
-}
-/* 禁用状态 */
-:disabled, .disabled {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="%23999999"/><path d="M6 6l12 12" stroke="white" stroke-width="2"/></svg>') 12 12, not-allowed;
-}
-/* 加载状态 */
-.wait, .loading {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="%234aa3ff" stroke-width="2" stroke-dasharray="15 10"/></svg>') 12 12, wait;
-}
-/* 精确选择状态（如工具面板） */
-.precise {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2" fill="%234aa3ff"/><circle cx="12" cy="12" r="6" fill="none" stroke="%234aa3ff" stroke-width="1"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="%234aa3ff" stroke-width="1.5"/></svg>') 12 12, crosshair;
-}
-/* 点击动画效果 */
-@keyframes cursorClick {
-  0% { transform: scale(1); opacity: 0; }
-  50% { transform: scale(1.5); opacity: 0.7; }
-  100% { transform: scale(2); opacity: 0; }
-}
-/* 悬停放大效果 */
-a:hover, button:hover {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><circle cx="14" cy="14" r="12" fill="none" stroke="%234aa3ff" stroke-width="2"/><circle cx="14" cy="14" r="7" fill="%234aa3ff" fill-opacity="0.5"/></svg>') 14 14, pointer;
-}
 </style>
-</html>
+</html>vv
