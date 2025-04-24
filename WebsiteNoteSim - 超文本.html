@@ -1722,6 +1722,197 @@
         right: 60px !important;
     }
 }
+
+/* 预览窗口样式 */
+.preview-content {
+    width: 80vw;
+    height: 70vh;
+    background: white;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.preview-header {
+    padding: 10px;
+    background: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#previewFrame {
+    flex: 1;
+    border: none;
+    border-radius: 0 0 8px 8px;
+}
+
+/* 暗色模式适配 */
+[data-theme="dark"] .preview-content {
+    background: #1e1e1e;
+}
+
+[data-theme="dark"] .preview-header {
+    background: #252526;
+    border-color: #333;
+}
+
+/* 更新日志按钮样式 */
+.changelog-button {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    border: 2px solid rgba(255,255,255,0.2);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+
+.changelog-button:hover {
+    transform: scale(1.1);
+}
+
+.exclamation-mark {
+    font-weight: 700;
+    font-size: 24px;
+    margin-top: -3px;
+}
+
+/* 更新日志窗口样式 */
+.changelog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+}
+
+.changelog-container {
+    width: 800px;
+    height: 600px;
+    background: rgba(30,30,30,0.9);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.changelog-header {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.log-title {
+    margin: 0;
+    font-size: 20px;
+    color: #fff;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.close-btn:hover {
+    color: var(--primary-color);
+}
+
+/* 日志网格布局 */
+.log-grid {
+    flex: 1;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    overflow-y: auto;
+}
+
+.log-card {
+    background: rgba(50,50,50,0.8);
+    border-radius: 8px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.log-card:hover {
+    transform: translateY(-3px);
+    background: rgba(60,60,60,0.9);
+}
+
+.log-card h3 {
+    margin: 0 0 10px 0;
+    color: var(--primary-color);
+}
+
+.log-card p {
+    color: rgba(255,255,255,0.8);
+    font-size: 14px;
+}
+
+/* 日志详情样式 */
+.log-detail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(40,40,40,0.95);
+    padding: 20px;
+    display: none;
+    overflow-y: auto;
+}
+
+.log-detail.active {
+    display: block;
+}
+
+/* 暗色模式适配 */
+[data-theme="light"] .changelog-container {
+    background: rgba(255,255,255,0.9);
+    border-color: rgba(0,0,0,0.1);
+}
+
+[data-theme="light"] .log-title,
+[data-theme="light"] .close-btn {
+    color: #333;
+}
+
+[data-theme="light"] .log-card {
+    background: rgba(240,240,240,0.9);
+    border-color: rgba(0,0,0,0.1);
+}
+
+[data-theme="light"] .log-card h3 {
+    color: var(--primary-color);
+}
+
+[data-theme="light"] .log-card p {
+    color: rgba(0,0,0,0.8);
+}
 </style>
 
 <body>
@@ -2629,8 +2820,18 @@ function saveFile() {
                 <button class="button" id="undoBtn" title="回退 (Ctrl+Z)" onclick="undoChange()" disabled>回退</button>
                 <button class="button" id="redoBtn" title="前进 (Ctrl+Y)" onclick="redoChange()" disabled>前进</button>
                 <button class="button log-btn" onclick="showAuditLog()" style="margin-left: auto;">审计日志</button>
+                <button id="runButton" class="button" onclick="executeCode()" title="运行代码 (Ctrl+Enter)">▶Run</button>
             </div>
             <button class="button logout-button" onclick="logout()">退出登录</button>
+        </div>
+        <div id="previewWindow" class="modal-overlay" style="display:none;">
+            <div class="preview-content">
+                <div class="preview-header">
+                    <span>实时预览</span>
+                    <button onclick="closePreview()" class="button">×</button>
+                </div>
+                <iframe id="previewFrame"></iframe>
+            </div>
         </div>
         <div class="editor-container">
             <!-- 在编辑器容器底部添加编码栏 -->
@@ -4006,8 +4207,25 @@ function updateChatDisplay() {
         </div>
     </div>
 </div>
+
+<button id="changelogBtn" class="changelog-button">
+    <span class="exclamation-mark">!</span>
+</button>
+
+<!-- 更新日志窗口 -->
+<div id="changelogWindow" class="changelog-overlay">
+    <div class="changelog-container">
+        <div class="changelog-header">
+            <h2 class="log-title">更新日志</h2>
+            <button class="close-btn" onclick="closeChangelog()">×</button>
+        </div>
+        <div class="log-grid" id="logGrid">
+
+        </div>
+        <div class="log-detail" id="logDetail"></div>
+    </div>
+</div>
 </body>
-<!-- 添加新的工具栏按钮到菜单栏 -->
 <script>
     // 新增Code模式逻辑
 let currentSourceCode = '';
@@ -5357,7 +5575,7 @@ buttons.forEach(button => {
         }, 3000);
     }
 
-    // 修改保存功能
+    //    SaveFile
     function saveFile() {
         if(currentFile?.format === 'html' && !validateHTML(editor.value)) {
             showError('无法保存：存在未闭合的HTML标签');
@@ -6478,354 +6696,7 @@ document.addEventListener('selectionchange', () => {
         dropArea.innerHTML = '<div style="font-size: 14px;">或将文件拖放到此处</div>';
     }
     
-    // 导入功能相关函数
-    function importFile() {
-        document.getElementById('importModal').style.display = 'flex';
-        document.getElementById('fileInput').value = ''; // 清空之前的选择
-        resetDropArea();
-        document.getElementById('selectedFileName').textContent = '未选择文件';
-        initDropArea(); // 初始化拖放功能
-    }
-    
-    function closeImportModal() {
-        document.getElementById('importModal').style.display = 'none';
-    }
-    
-    // 修改导入处理函数，添加导入到列表选项的逻辑
-    function processImport() {
-        const fileInput = document.getElementById('fileInput');
-        const file = fileInput.files[0];
-        
-        if (!file) {
-            showError('请选择要导入的文件');
-            return;
-        }
-        
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const content = e.target.result;
-            const importMode = document.querySelector('input[name="importMode"]:checked').value;
-            
-            // 处理导入到列表的情况
-            if (importMode === 'toList') {
-                // 创建新文件添加到列表
-                const newFile = {
-                    id: Date.now().toString(),
-                    name: file.name,
-                    content: content,
-                    format: file.name.split('.').pop() || 'txt',
-                    history: []
-                };
-                
-                files.push(newFile);
-                localStorage.setItem('editorFiles', JSON.stringify(files));
-                initFileList();
-                showStatus('文件已导入到列表');
-                logAction('IMPORT_TO_LIST', file.name);
-            } else {
-                // 原有的导入逻辑
-                if (!currentFile) {
-                    // 如果没有打开的文件，创建一个新文件
-                    const newFile = {
-                        id: Date.now().toString(),
-                        name: file.name,
-                        content: content,
-                        format: file.name.split('.').pop() || 'txt',
-                        history: []
-                    };
-                    
-                    files.push(newFile);
-                    currentFile = newFile;
-                    editor.value = content;
-                } else {
-                    // 根据选择的模式处理内容
-                    if (importMode === 'replace') {
-                        editor.value = content;
-                    } else if (importMode === 'append') {
-                        editor.value += '\n' + content;
-                    }
-                    
-                    // 更新当前文件内容
-                    if (currentFile.format === 'jpg') {
-                        // 对于绘图文件，需要特殊处理
-                        loadImageToCanvas(content);
-                    } else {
-                        currentFile.content = editor.value;
-                    }
-                }
-                
-                lastSavedContent = editor.value;
-                showStatus('文件导入成功');
-                logAction('IMPORT', file.name);
-            }
-            
-            localStorage.setItem('editorFiles', JSON.stringify(files));
-            closeImportModal();
-        };
-        
-        reader.onerror = function() {
-            showError('读取文件时出错');
-        };
-        
-        if (file.type.startsWith('image/') || file.name.endsWith('.jpg')) {
-            reader.readAsDataURL(file); // 对于图片文件或.jpg文件，以DataURL格式读取
-        } else {
-            reader.readAsText(file); // 对于文本文件，以文本格式读取
-        }
-    }
-    
-    // 处理图片导入到画布
-    function loadImageToCanvas(dataURL) {
-        if (currentFile && currentFile.format === 'jpg') {
-            switchToCanvasMode();
-            const img = new Image();
-            img.onload = function() {
-                ctx.clearRect(0, 0, htyCanvas.width, htyCanvas.height);
-                ctx.drawImage(img, 0, 0);
-                currentFile.content = htyCanvas.toDataURL('image/jpeg', 0.9);
-            };
-            img.src = dataURL;
-        }
-    }
 
-    // 添加点击事件监听器
-    document.addEventListener("DOMContentLoaded", function() {
-    const secureboxButton = document.getElementById('secureboxButton');
-    
-    if(secureboxButton) {
-        secureboxButton.addEventListener('click', function() {
-            window.location.href = 'ZIP Pro.html';
-        });
-    } else {
-        console.error('错误：未找到 HTML IDE 按钮元素');
-    }
-});
-
-    // 新增导入按钮样式
-    document.head.insertAdjacentHTML('beforeend', `
-        <style>
-            .import-btn {
-                background: rgba(74, 144, 226, 0.3);
-                border-color: rgba(74, 144, 226, 0.4);
-            }
-            .import-btn:hover {
-                background: rgba(74, 144, 226, 0.4);
-            }
-        </style>
-    `);
-    
-    // 触发隐藏的文件输入
-    function triggerFileInput() {
-        document.getElementById('fileInput').click();
-    }
-    
-    // 显示所选文件名
-    document.getElementById('fileInput').addEventListener('change', function() {
-        const fileName = this.files.length > 0 ? this.files[0].name : '未选择文件';
-        document.getElementById('selectedFileName').textContent = fileName;
-        
-        // 更改拖放区域样式以指示已选择文件
-        const dropArea = document.getElementById('dropArea');
-        if (this.files.length > 0) {
-            dropArea.style.borderColor = 'rgba(74, 144, 226, 0.6)';
-            dropArea.style.background = 'rgba(74, 144, 226, 0.1)';
-            dropArea.innerHTML = `<div style="font-size: 14px;">已选择: ${fileName}</div>`;
-        } else {
-            resetDropArea();
-        }
-    });
-    
-    // 初始化拖放功能
-    function initDropArea() {
-        const dropArea = document.getElementById('dropArea');
-        const fileInput = document.getElementById('fileInput');
-        
-        // 阻止默认拖放行为
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, preventDefaults, false);
-        });
-        
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-        
-        // 高亮拖放区域
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropArea.addEventListener(eventName, highlight, false);
-        });
-        
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, unhighlight, false);
-        });
-        
-        function highlight() {
-            dropArea.style.borderColor = 'rgba(74, 144, 226, 0.8)';
-            dropArea.style.background = 'rgba(74, 144, 226, 0.2)';
-        }
-        
-        function unhighlight() {
-            resetDropArea();
-        }
-        
-        // 处理拖放的文件
-        dropArea.addEventListener('drop', handleDrop, false);
-        
-        function handleDrop(e) {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            
-            if (files.length > 0) {
-                fileInput.files = files;
-                const event = new Event('change');
-                fileInput.dispatchEvent(event);
-            }
-        }
-    }
-    
-    function resetDropArea() {
-        const dropArea = document.getElementById('dropArea');
-        dropArea.style.borderColor = 'var(--border-color)';
-        dropArea.style.background = 'var(--secondary-bg)';
-        dropArea.innerHTML = '<div style="font-size: 14px;">或将文件拖放到此处</div>';
-    }
-    
-    // 导入功能相关函数
-    function importFile() {
-        document.getElementById('importModal').style.display = 'flex';
-        document.getElementById('fileInput').value = ''; // 清空之前的选择
-        resetDropArea();
-        document.getElementById('selectedFileName').textContent = '未选择文件';
-        initDropArea(); // 初始化拖放功能
-    }
-    
-    function closeImportModal() {
-        document.getElementById('importModal').style.display = 'none';
-    }
-    
-    // 修改导入处理函数，添加导入到列表选项的逻辑
-    function processImport() {
-        const fileInput = document.getElementById('fileInput');
-        const file = fileInput.files[0];
-        
-        if (!file) {
-            showError('请选择要导入的文件');
-            return;
-        }
-        
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const content = e.target.result;
-            const importMode = document.querySelector('input[name="importMode"]:checked').value;
-            
-            // 处理导入到列表的情况
-            if (importMode === 'toList') {
-                // 创建新文件添加到列表
-                const newFile = {
-                    id: Date.now().toString(),
-                    name: file.name,
-                    content: content,
-                    format: file.name.split('.').pop() || 'txt',
-                    history: []
-                };
-                
-                files.push(newFile);
-                localStorage.setItem('editorFiles', JSON.stringify(files));
-                initFileList();
-                showStatus('文件已导入到列表');
-                logAction('IMPORT_TO_LIST', file.name);
-            } else {
-                // 原有的导入逻辑
-                if (!currentFile) {
-                    // 如果没有打开的文件，创建一个新文件
-                    const newFile = {
-                        id: Date.now().toString(),
-                        name: file.name,
-                        content: content,
-                        format: file.name.split('.').pop() || 'txt',
-                        history: []
-                    };
-                    
-                    files.push(newFile);
-                    currentFile = newFile;
-                    editor.value = content;
-                } else {
-                    // 根据选择的模式处理内容
-                    if (importMode === 'replace') {
-                        editor.value = content;
-                    } else if (importMode === 'append') {
-                        editor.value += '\n' + content;
-                    }
-                    
-                    // 更新当前文件内容
-                    if (currentFile.format === 'jpg') {
-                        // 对于绘图文件，需要特殊处理
-                        loadImageToCanvas(content);
-                    } else {
-                        currentFile.content = editor.value;
-                    }
-                }
-                
-                lastSavedContent = editor.value;
-                showStatus('文件导入成功');
-                logAction('IMPORT', file.name);
-            }
-            
-            localStorage.setItem('editorFiles', JSON.stringify(files));
-            closeImportModal();
-        };
-        
-        reader.onerror = function() {
-            showError('读取文件时出错');
-        };
-        
-        if (file.type.startsWith('image/') || file.name.endsWith('.jpg')) {
-            reader.readAsDataURL(file); // 对于图片文件或.jpg文件，以DataURL格式读取
-        } else {
-            reader.readAsText(file); // 对于文本文件，以文本格式读取
-        }
-    }
-    
-    // 处理图片导入到画布
-    function loadImageToCanvas(dataURL) {
-        if (currentFile && currentFile.format === 'jpg') {
-            switchToCanvasMode();
-            const img = new Image();
-            img.onload = function() {
-                ctx.clearRect(0, 0, htyCanvas.width, htyCanvas.height);
-                ctx.drawImage(img, 0, 0);
-                currentFile.content = htyCanvas.toDataURL('image/jpeg', 0.9);
-            };
-            img.src = dataURL;
-        }
-    }
-
-    // 添加点击事件监听器
-    document.addEventListener("DOMContentLoaded", function() {
-    const secureboxButton = document.getElementById('secureboxButton');
-    
-    if(secureboxButton) {
-        secureboxButton.addEventListener('click', function() {
-            window.location.href = 'ZIP Pro.html';
-        });
-    } else {
-        console.error('错误：未找到 HTML IDE 按钮元素');
-    }
-});
-
-    // 新增导入按钮样式
-    document.head.insertAdjacentHTML('beforeend', `
-        <style>
-            .import-btn {
-                background: rgba(74, 144, 226, 0.3);
-                border-color: rgba(74, 144, 226, 0.4);
-            }
-            .import-btn:hover {
-                background: rgba(74, 144, 226, 0.4);
-            }
-        </style>
-    `);
-    
     // 触发隐藏的文件输入
     function triggerFileInput() {
         document.getElementById('fileInput').click();
@@ -8040,50 +7911,7 @@ function updateLineStats() {
             console.error('Error loading background:', e);
         }
     }
-
-    // 添加点击事件监听器
-    document.addEventListener("DOMContentLoaded", function() {
-    const AiChatButton = document.getElementById('AiChatButton');
-    
-    if(AiChatButton) {
-        AiChatButton.addEventListener('click', function() {
-            window.location.href = 'Ai Chat.html';
-        });
-    } else {
-        console.error('错误：未找到 HTML IDE 按钮元素');
-    }
-});
 </script>
-    <!-- AI按钮 -->
-    <button id="AiChatButton" class="bottom-left-button">AIChatSuper Beta</button>
-    <!-- HTML IDE 按钮 -->
-    <button id="htmlIdeButton" class="bottom-left-button_color">HTML IDE Beta</button>
-</body>
-<style>
-/*    左下Button     */
-.bottom-left-button {
-    position: fixed;
-    bottom: 70px;
-    left: 20px;
-    padding: 10px 17px;
-    border-radius: 8px;
-    background: rgba(61, 61, 61, 0.411);
-    color: var(--text-color);
-    border: 1px solid rgba(255, 255, 255, 0.712);
-    cursor: pointer;
-    z-index: 1000;
-    background-size: 200% 100%;
-    opacity: 0.9; /* 设置整体透明度为 0.8 (可以调整) */
-    backdrop-filter: blur(50px); /*  可以添加轻微的模糊效果，增强半透明感 */
-}
- 
-
-.bottom-left-button:hover {
-    filter: brightness(1.1);
-    opacity: 1; /* 鼠标悬停时恢复不透明 */
-}
-</style>
-
 <style>
 /* 添加OCT的样式高亮 */
 .hex-row:nth-child(4n) .hex-value {
@@ -8429,15 +8257,6 @@ function updateEditorDisplay() {
     }
 }
 
-// 修改保存逻辑
-function saveFile() {
-    if(currentFile) {
-        currentFile.content = originalContent; // 使用原始内容保存
-        localStorage.setItem('editorFiles', JSON.stringify(files));
-        showStatus('已保存');
-    }
-}
-
 // 初始化加载内容时
 function loadFileContent(content) {
     originalContent = content;
@@ -8505,15 +8324,6 @@ function saveCursorPosition() {
 function restoreCursorPosition(pos) {
     const selection = window.getSelection();
     selection.collapse(pos.anchorNode, pos.anchorOffset);
-}
-
-// 修改保存逻辑
-function saveFile() {
-    if(currentFile) {
-        currentFile.content = document.getElementById('editor').textContent;
-        localStorage.setItem('editorFiles', JSON.stringify(files));
-        showStatus('已保存');
-    }
 }
 
 // 初始化编辑器为contenteditable
@@ -9026,15 +8836,189 @@ function detectLanguage(filename) {
     return 'plaintext';
 }
 
-// 在文件打开时自动设置语言
-function openFile(file) {
-    const detectedLang = detectLanguage(file.name);
-    setLanguage(detectedLang);
-}
-
 // 初始化
 document.addEventListener('DOMContentLoaded', () => {
   initRequire();
+});
+
+// 执行策略配置
+const executionStrategies = {
+    html: {
+        execute(content) {
+            const preview = document.getElementById('previewFrame');
+            const blob = new Blob([`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <style>
+                        body { margin: 20px; background: ${document.documentElement.getAttribute('data-theme') === 'dark' ? '#1e1e1e' : 'white'};
+                            color: ${document.documentElement.getAttribute('data-theme') === 'dark' ? 'white' : 'black'};}
+                    </style>
+                </head>
+                <body>${content}</body>
+                </html>
+            `], { type: 'text/html' });
+            preview.src = URL.createObjectURL(blob);
+            showPreview();
+        }
+    },
+
+    javascript: {
+        execute(content) {
+            try {
+                const sandbox = createSandbox();
+                sandbox(content);
+            } catch (error) {
+                showError(`执行错误: ${error.message}`);
+            }
+        }
+    },
+
+    python: {
+        execute(content) {
+            showStatus('正在连接到Python内核...');
+            // 这里需要实际的Python执行后端
+            executePythonRemotely(content);
+        }
+    }
+};
+
+// 监听执行错误
+window.addEventListener('message', (event) => {
+    if (event.data.type === 'executionError') {
+        showError(event.data.error);
+    }
+});
+
+// 执行主函数
+function executeCode() {
+    const content = monacoEditor ? monacoEditor.getValue() : 
+                   document.getElementById('editor').value;
+    
+    const language = getCurrentLanguage(); // 需要实现语言检测函数
+    const strategy = executionStrategies[language] || executionStrategies.javascript;
+
+    try {
+        strategy.execute(content);
+        logExecution(language); // 记录执行日志
+    } catch (error) {
+        showError(`无法执行${language.toUpperCase()}代码: ${error.message}`);
+    }
+}
+
+// 显示预览窗口
+function showPreview() {
+    document.getElementById('previewWindow').style.display = 'flex';
+}
+
+function closePreview() {
+    document.getElementById('previewWindow').style.display = 'none';
+    URL.revokeObjectURL(document.getElementById('previewFrame').src);
+}
+
+// 语言检测函数（需要根据实际情况实现）
+function getCurrentLanguage() {
+    if (monacoEditor) {
+        return monacoEditor.getModel().getLanguageId();
+    }
+    return detectLanguage(currentFile.name); // 复用之前的文件检测逻辑
+}
+
+// 快捷键绑定
+document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        executeCode();
+        e.preventDefault();
+    }
+});
+
+// 预置日志数据
+const changelogData = [
+    {
+        id: 1,
+        title: "UpdateLog",
+        date: "2025-04-25",
+        preview: "MonacoIDE模式，Run按钮......",
+        content: "主要更新内容：\n- Add + MonacoIDE模式\n- Add + RunButton\n- Add # 删除AI拉的重代码 "
+    },
+    {
+        id: 2,
+        title: "注意事项",
+        date: "2025-04-25",
+        preview: "还有许多Bug...",
+        content: "已知Bug:\n- ColorIDE模式损坏\n- AIChatApi问题\n- 音乐无法播放\n- HTML文件无法保持\n- 大量重复代码\n- DevToolsCode模式输入后Code区域不显示字符"
+    },
+    {
+        id: 3,
+        title: "UpdateLog",
+        date: "2025-04-24",
+        preview: "显示控制字符开关，显示空格开关.......",
+        content: "Add + 显示控制字符开关\n- Add + 显示空格开关\n- Add # 修复SaveFile\n- Add # 修复文件信息显示"
+    },
+    {
+        id: 4,
+        title: "使用手册",
+        date: "2025-04-25",
+        preview: "点击查看详细内容......",
+        content: "不兼容:\n- MonacoIDE模式:\n- ColorIDE模式\n- 显示行号\n- 显示空格\n- 显示控制字符\n- Run"
+    }
+];
+
+// 初始化日志卡片
+function initChangelog() {
+    const grid = document.getElementById('logGrid');
+    grid.innerHTML = changelogData.map(log => `
+        <div class="log-card" data-id="${log.id}" onclick="showLogDetail(${log.id})">
+            <h3>${log.title}</h3>
+            <p>${log.date}</p>
+            <p>${log.preview}</p>
+        </div>
+    `).join('');
+}
+
+// 显示日志详情
+function showLogDetail(id) {
+    const log = changelogData.find(l => l.id === id);
+    const detail = document.getElementById('logDetail');
+    
+    detail.innerHTML = `
+        <div class="detail-header">
+            <button class="close-btn" onclick="backToGrid()">←</button>
+            <h2>${log.title}</h2>
+        </div>
+        <div class="detail-content">
+            <p>发布日期：${log.date}</p>
+            <pre>${log.content}</pre>
+        </div>
+    `;
+
+    document.querySelector('.log-title').textContent = log.title;
+    detail.classList.add('active');
+}
+
+// 返回网格视图
+function backToGrid() {
+    document.getElementById('logDetail').classList.remove('active');
+    document.querySelector('.log-title').textContent = '更新日志';
+}
+
+// 打开/关闭窗口
+document.getElementById('changelogBtn').addEventListener('click', () => {
+    document.getElementById('changelogWindow').style.display = 'flex';
+    initChangelog();
+});
+
+function closeChangelog() {
+    document.getElementById('changelogWindow').style.display = 'none';
+    backToGrid();
+}
+
+// 点击外部关闭窗口
+document.getElementById('changelogWindow').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('changelogWindow')) {
+        closeChangelog();
+    }
 });
 </script>
 <script src="https://cdn.bootcdn.net/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
@@ -9459,4 +9443,4 @@ input[type="radio"] {
   --cursor-click-effect: rgba(0, 0, 0, 0.2);
 }
 </style>
-</html>vv
+</html>
