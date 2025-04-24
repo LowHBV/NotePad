@@ -1,4 +1,5 @@
-# 全能文本编辑器功能总结
+# WebsiteNotePad
+全局密码:`Admin`
 
 ## 核心功能模块
 
