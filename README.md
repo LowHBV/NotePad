@@ -34,6 +34,10 @@
   - HTML实时预览
   - JavaScript
   - Python远程执行(暂未实现)
+- **内置DevTools**
+  - 直观修改当前页面
+  - 用户自定义
+  - 可视化
 
 #### 文档工具
 - **Markdown增强**：
