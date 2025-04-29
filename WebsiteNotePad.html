@@ -2652,7 +2652,7 @@
 .voice-btn {
     position: fixed;
     right: 20px;
-    bottom: 20px;
+    bottom: 42px;
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -2874,9 +2874,611 @@
     background: #333;
     border-radius: 3px;
 }
+
+/* 浏览器模式样式 */
+#browserContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    background: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.browser-menu-bar {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    background: var(--secondary-bg);
+    border-bottom: 1px solid var(--border-color);
+    align-items: center;
+}
+
+#browserUrlBar {
+    flex: 1;
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+.nav-controls {
+    display: flex;
+    gap: 5px;
+}
+
+/* 暗色模式适配 */
+[data-theme="dark"] #browserContainer {
+    background: #1e1e1e;
+}
+
+[data-theme="dark"] #browserUrlBar {
+    background: #252526;
+    border-color: #333;
+}
+
+/* 加密模态框样式 */
+#encryptModal .modal-content {
+    width: 400px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+}
+
+.input-group {
+    margin: 15px 0;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text-secondary);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background: var(--secondary-bg);
+    color: var(--text-color);
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* 历史粘贴板样式 */
+.clipboard-history-panel {
+    position: fixed;
+    left: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 300px;
+    max-height: 70vh;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    display: none;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.clipboard-header {
+    padding: 12px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.clipboard-list {
+    overflow-y: auto;
+    max-height: calc(70vh - 50px);
+}
+
+.clipboard-item {
+    padding: 12px;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background 0.2s;
+    position: relative;
+}
+
+.clipboard-item:hover {
+    background: rgba(74, 144, 226, 0.1);
+}
+
+.clipboard-content {
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 100px;
+    overflow: hidden;
+    mask-image: linear-gradient(180deg, #000 60%, transparent);
+}
+
+.clipboard-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8em;
+    color: var(--text-secondary);
+    margin-top: 8px;
+}
+
+.btn-clear {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.btn-clear:hover {
+    background: rgba(255, 99, 71, 0.1);
+    color: #ff6347;
+}
+
+.clipboard-item-actions {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.clipboard-item:hover .clipboard-item-actions {
+    opacity: 1;
+}
+
+/* 基础样式 */
+.timer-panel {
+    position: fixed;
+    top: 100px;
+    left: 100px;
+    width: 320px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    z-index: 1000;
+    display: none;
+    backdrop-filter: blur(10px);
+}
+
+.panel-header {
+    padding: 12px;
+    background: rgba(74, 144, 226, 0.1);
+    border-radius: 12px 12px 0 0;
+    cursor: move;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 1.2em;
+}
+
+.panel-body {
+    padding: 15px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+/* 计时器输入样式 */
+.time-input {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.time-input input {
+    width: 60px;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    text-align: center;
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+.timer-display {
+    font-size: 2em;
+    text-align: center;
+    margin: 15px 0;
+    font-family: monospace;
+}
+
+/* 闹钟样式 */
+.alarm-form {
+    display: grid;
+    gap: 10px;
+}
+
+.repeat-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 10px 0;
+}
+
+.repeat-options label {
+    padding: 5px 8px;
+    border-radius: 15px;
+    background: rgba(74, 144, 226, 0.1);
+    cursor: pointer;
+}
+
+.alarm-list {
+    margin-top: 15px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 10px;
+}
+
+.alarm-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: var(--bg-color);
+    margin: 5px 0;
+    border-radius: 8px;
+}
+
+/* 按钮样式 */
+.timer-btn, .alarm-btn {
+    background: rgba(74, 144, 226, 0.2);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.timer-btn:hover, .alarm-btn:hover {
+    background: rgba(74, 144, 226, 0.3);
+}
+
+/* 暗色模式适配 */
+[data-theme="dark"] {
+    .timer-panel {
+        background: rgba(30, 30, 30, 0.9);
+    }
+    
+    .time-input input {
+        background: #2a2a2a;
+    }
+}
+
+/* 游戏窗口样式 */
+.game-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(var(--bg-color-rgb), 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+.game-content {
+    position: relative;
+    width: 400px;
+    max-width: 90vw;
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+.start-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 30px;
+    background: var(--accent-color);
+    border: none;
+    border-radius: 25px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.start-btn:hover {
+    transform: scale(1.05);
+}
+
+#snakeCanvas {
+    background: var(--secondary-bg);
+    border-radius: 8px;
+    display: none;
+    margin: 0 auto;
+}
+
+.game-info {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* 通用通知组件 */
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px 25px;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    animation: slideIn 0.3s ease-out;
+    backdrop-filter: blur(5px);
+    z-index: 10000;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+.notification.show {
+    display: flex;
+}
+
+.notification-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.notification-message {
+    margin: 0;
+    color: var(--text-color);
+}
+
+.file-item.pinned {
+    border-left: 3px solid #ffd700;
+    background: rgba(255, 215, 0, 0.1);
+}
+
+.pin-icon {
+    margin-left: 8px;
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+.file-item.pinned .pin-icon {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.8; }
+    50% { opacity: 0.4; }
+    100% { opacity: 0.8; }
+}
+
+/* 开发编辑器样式 */
+.dev-editor-panel {
+    position: fixed;
+    right: -300px;
+    top: 0;
+    bottom: 0;
+    width: 300px;
+    background: var(--secondary-bg);
+    border-left: 1px solid var(--border-color);
+    transition: right 0.3s ease;
+    padding: 15px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.dev-editor-panel.active {
+    right: 0;
+}
+
+.property-section {
+    margin-bottom: 20px;
+}
+
+.property-section h4 {
+    color: var(--text-secondary);
+    margin: 10px 0;
+}
+
+.property-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.property-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.property-item label {
+    min-width: 60px;
+    font-size: 0.9em;
+    color: var(--text-secondary);
+}
+
+.property-input {
+    flex: 1;
+    padding: 6px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 4px;
+}
+
+.color-preview {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+}
+
+/* 十六进制编辑器样式 */
+.hex-editor-container {
+    font-family: monospace;
+    color: var(--text-color);
+    border-top: 1px solid var(--border-color);
+    height: 100% !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+}
+
+.hex-header {
+    display: flex;
+    padding: 8px;
+    background: var(--secondary-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.hex-main {
+    display: flex;
+    height: calc(100% - 40px);
+}
+
+.hex-view {
+    width: 70%;
+    overflow: auto;
+    border-right: 1px solid var(--border-color);
+}
+
+.encoding-view {
+    width: 30%;
+    padding: 10px;
+}
+
+
+
+.hex-cell {
+    padding: 2px;
+    cursor: cell;
+    transition: background 0.2s;
+}
+
+.hex-cell:hover {
+    background: rgba(74, 144, 226, 0.2);
+}
+
+.hex-address {
+    color: var(--text-secondary);
+    margin-left: 20px;
+}
+
+.h-encoding-select {
+    width: 100%;
+    margin-bottom: 10px;
+    background: var(--secondary-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 6px;
+}
+
+.text-preview {
+    white-space: pre-wrap;
+    overflow: auto;
+    height: calc(100% - 40px);
+    font-family: monospace;
+    border: 1px solid var(--border-color);
+    padding: 8px;
+}
+
+/* 加载动画样式 */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.233);
+    backdrop-filter: blur(5px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.3s ease;
+}
+
+[data-theme="dark"] .loading-overlay {
+    background: rgba(0, 0, 0, 0.233);
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+.loading-text {
+    color: var(--text-color);
+    font-size: 1.2em;
+    font-weight: 500;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 加载时编辑器模糊效果 */
+.editor-loading {
+    filter: blur(3px);
+    pointer-events: none;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
 </style>
 
 <body>
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">正在加载编辑器...</div>
+    </div>
+
     <!-- 在body开头添加垂直按钮栏 -->
     <div id="sideToolbar" class="sideToolbar">
         <!--  AIChat  -->
@@ -2940,10 +3542,21 @@
             <svg width="20" height="20"><circle cx="10" cy="10" r="8"/></svg>
         </button>
         <div class="sub-tool-list">
+            <button class="tool-button" onclick="showSnakeGame()" title="SnakeGame">
+                <svg width="20" height="20">
+                    <path d="M5 2h2v2H5zm4 0h2v2H9zm4 0h2v2h-2zM3 6h2v2H3zm4 0h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2zM5 10h2v2H5zm4 0h2v2H9zm4 0h2v2h-2z"/>
+                </svg>
+            </button>
             <button class="tool-button" onclick="showUnicodePanel()" title="Unicode查看器">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M7 8a5 5 0 1 0 10 0A5 5 0 0 0 7 8z"></path>
                     <path d="M17 14.7A7 7 0 0 0 7 14.7M7 14.7l5 5.3m-5-5.3l5 5.3"></path>
+                </svg>
+            </button>
+            <button class="tool-button" onclick="toggleTimerPanel()" title="计时器和闹钟">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 6v6l4 2" stroke="currentColor" fill="none"/>
                 </svg>
             </button>
             <button class="tool-button" onclick="showSearchPanel()" title="多引擎搜索">
@@ -2993,6 +3606,12 @@
         </div>
     </div>
     
+    <button class="tool-button" onclick="toggleBrowserMode()" title="网页浏览器">
+        <svg width="20" height="20" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+        </svg>
+    </button>
+
     <!-- 插件加载状态提示 -->
     <div id="pluginStatus" class="status-bar" style="display:none; left:20px;"></div>
     <!-- 插件菜单容器 -->
@@ -3096,6 +3715,11 @@
             <button class="tool-button" onclick="handlePrint()" title="打印 (Ctrl+P)">
                 <svg width="20" height="20" viewBox="0 0 24 24">
                     <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
+                </svg>
+            </button>
+            <button class="tool-button" onclick="toggleClipboardHistory()" title="历史粘贴板">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm5 18H5V5h2v2h10V5h2v16z"/>
                 </svg>
             </button>
         </div>    
@@ -3818,6 +4442,7 @@ function saveFile() {
                 <button class="button" id="redoBtn" title="前进 (Ctrl+Y)" onclick="redoChange()" disabled>前进</button>
                 <button class="button log-btn" onclick="showAuditLog()" style="margin-left: auto;">审计日志</button>
                 <button id="runButton" class="button" onclick="executeCode()" title="运行代码 (Ctrl+Enter)">▶Run</button>
+                <button id="hexModeBtn" class="button" onclick="toggleHexMode()">🔧HEX</button>
             </div>
             <button class="button logout-button" onclick="logout()">退出登录</button>
         </div>
@@ -3829,6 +4454,11 @@ function saveFile() {
                         <button class="visual-btn" data-action="drag">↔ 拖动元素</button>
                         <button class="visual-btn" data-action="text">T 编辑文本</button>
                         <button class="visual-btn" data-action="color">🎨 颜色</button>
+                        <button id="devEditorToggle" class="visual-btn" onclick="toggleDevEditor()">
+                        <svg width="14" height="14" viewBox="0 0 24 24">
+                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                        </svg>DevEditor</button>
+                        <button onclick="closePreview()" class="button">×</button>
                         <input type="color" id="colorPicker" hidden>
                     </div>
                         <div class="preview-controls">
@@ -3853,6 +4483,28 @@ function saveFile() {
             </div>
         </div>
         <div class="editor-container">
+                                <!-- 十六进制编辑器容器 -->
+            <div id="hexEditor" class="hex-editor-container" style="display:none;">
+                <div class="hex-header">
+                    <span>偏移量</span>
+                    <div class="hex-address">00000000</div>
+                </div>
+                <div class="hex-main">
+                    <div class="hex-view">
+                        <div id="hexData" class="hex-data"></div>
+                    </div>
+                    <div class="encoding-view">
+                        <select id="encodingSelect" class="h-encoding-select">
+                            <option value="UTF-8">UTF-8</option>
+                            <option value="UTF-16">UTF-16</option>
+                            <option value="GBK">GBK</option>
+                            <option value="BIG5">BIG5</option>
+                            <option value="Windows-1252">Western</option>
+                        </select>
+                        <div id="textPreview" class="text-preview"></div>
+                    </div>
+                </div>
+            </div>
             <button id="voiceInputBtn" class="voice-btn">
                 <svg width="24" height="24" viewBox="0 0 24 24">
                     <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
@@ -4321,6 +4973,7 @@ function deleteScript(index) {
             <div class="toolbar-title">文件操作</div>
             <button class="button" onclick="handleFileOpen()">打开本地文件</button>
             <button class="button" onclick="handleFileSave()" style="margin-top:10px;">保存到本地</button>
+            <button class="button" onclick="showEncryptModal()">🔒 加密导出</button>
         </div>
         <div class="toolbar-section">
             <div class="toolbar-title">界面主题</div>
@@ -4493,6 +5146,7 @@ function deleteScript(index) {
 
 <!-- 在body底部添加右键菜单 -->
 <div class="context-menu" id="fileContextMenu">
+    <div class="menu-item" id="pinMenuItem" onclick="togglePinFile()">置顶文件</div>
     <div class="menu-item" onclick="showNewFileModal()">新建文件</div>
     <div class="menu-item" onclick="createNewFolder()">新建文件夹</div>
     <div class="menu-divider"></div>
@@ -4802,9 +5456,14 @@ function deleteScript(index) {
         <div class="ai-header">
             <h3>AI 助手</h3>
             <div class="ai-controls">
+                <button id="importModelBtn" class="button">
+                    <input type="file" id="modelUpload" hidden accept=".zip,.json" />
+                    <label for="modelUpload">导入模型</label>
+                </button>
                 <button class="button" onclick="newAIChat()">新建对话</button>
                 <button class="button" onclick="toggleAISettings()">设置</button>
                 <button class="button" onclick="closeAIPanel()">×</button>
+                <div id="modelStatus" class="status-bar"></div>
             </div>
         </div>
         
@@ -4841,7 +5500,9 @@ function deleteScript(index) {
     </div>
 </div>
 
+
 <style>
+
 /* AI对话框样式 */
 .ai-header {
     display: flex;
@@ -5365,7 +6026,7 @@ function updateChatDisplay() {
         <span class="emulator-time">00:00</span>
         <div class="status-icons">
             <span class="signal">📶</span>
-            <span class="battery">🔋 98%</span>
+            <span class="battery">🔋 100%</span>
         </div>
     </div>
     
@@ -5378,6 +6039,18 @@ function updateChatDisplay() {
         <div class="app-item" data-app="edge" onclick="openApp('edge')">
             <img src="https://www.microsoft.com/favicon.ico" class="app-icon">
             <span class="app-label">Edge</span>
+        </div>
+        <div class="app-item" data-app="weather" onclick="openApp('weather')">
+            <img src="https://cdn-icons-png.flaticon.com/512/1163/1163661.png" class="app-icon">
+            <span class="app-label">天气</span>
+        </div>
+        <div class="app-item" data-app="windows12" onclick="openApp('windows12')">
+            <img src="https://tjy-gitnub.github.io/win12/icon/logo.svg" class="app-icon">
+            <span class="app-label">Windows12</span>
+        </div>
+        <div class="app-item" data-app="msn_weather" onclick="openApp('msn_weather')">
+            <img src="https://assets.msn.cn/weathermapdata/1/static/weather/Icons/taskbar_v10/Condition_Card/MostlyClearNight.svg" class="app-icon">
+            <span class="app-label">MSN天气</span>
         </div>
     </div>
 
@@ -5395,7 +6068,131 @@ function updateChatDisplay() {
     </div>
 </div>
 
+<div id="browserContainer" style="display:none;">
+    <!-- 浏览器菜单栏 -->
+    <div class="browser-menu-bar">
+        <div class="nav-controls">
+            <button class="button" onclick="browserGoBack()" id="browserBackBtn">←</button>
+            <button class="button" onclick="browserGoForward()" id="browserForwardBtn">→</button>
+            <button class="button" onclick="browserReload()">↻</button>
+        </div>
+        <input type="text" id="browserUrlBar" 
+               placeholder="输入网址或搜索内容"
+               onkeypress="handleBrowserUrlInput(event)">
+        <div class="browser-tools">
+            <button class="button" onclick="exitBrowserMode()">退出</button>
+        </div>
+    </div>
+    
+    <!-- 网页容器 -->
+    <webview id="webview" 
+             style="width:100%; height:calc(100vh - 50px);"
+             partition="persist:browser"
+             allowpopups></webview>
+</div>
 
+<div id="encryptModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3>加密导出设置</h3>
+        <div class="input-group">
+            <label>输入加密密码：</label>
+            <input type="password" id="encryptPassword" autocomplete="new-password">
+        </div>
+        <div class="input-group">
+            <label>确认密码：</label>
+            <input type="password" id="confirmPassword">
+        </div>
+        <div class="button-group">
+            <button class="button" onclick="performEncryption()">导出</button>
+            <button class="button" onclick="closeEncryptModal()">取消</button>
+        </div>
+    </div>
+</div>
+
+<div class="clipboard-history-panel" id="clipboardPanel">
+    <div class="clipboard-header">
+        <h4>历史粘贴记录</h4>
+        <div class="clipboard-controls">
+            <button class="btn-clear" onclick="clearClipboardHistory()">清空</button>
+            <button class="close-btn" onclick="toggleClipboardHistory()">×</button>
+        </div>
+    </div>
+    <div class="clipboard-list" id="clipboardList"></div>
+</div>
+
+<div id="timerPanel" class="timer-panel">
+    <div class="panel-header" onmousedown="startDragging(event)">
+        ⏰ 计时器与闹钟
+        <button class="close-btn" onclick="closeTimerPanel()">&times;</button>
+    </div>
+    
+    <div class="panel-body">
+        <!-- 计时器模块 -->
+        <div class="timer-section">
+            <h3>计时器</h3>
+            <div class="time-input">
+                <input type="number" id="hours" placeholder="时" min="0">
+                <span>:</span>
+                <input type="number" id="minutes" placeholder="分" min="0" max="59">
+                <span>:</span>
+                <input type="number" id="seconds" placeholder="秒" min="0" max="59">
+            </div>
+            <div class="timer-controls">
+                <button class="timer-btn" onclick="startTimer()">▶ 开始</button>
+                <button class="timer-btn" onclick="pauseTimer()">⏸ 暂停</button>
+                <button class="timer-btn" onclick="resetTimer()">↺ 重置</button>
+            </div>
+            <div id="timerDisplay" class="timer-display">00:00:00</div>
+        </div>
+
+        <!-- 闹钟模块 -->
+        <div class="alarm-section">
+            <h3>闹钟设置</h3>
+            <div class="alarm-form">
+                <input type="time" id="alarmTime" required>
+                <div class="repeat-options">
+                    <label><input type="checkbox" name="repeat" value="0"> 日</label>
+                    <label><input type="checkbox" name="repeat" value="1"> 一</label>
+                    <label><input type="checkbox" name="repeat" value="2"> 二</label>
+                    <label><input type="checkbox" name="repeat" value="3"> 三</label>
+                    <label><input type="checkbox" name="repeat" value="4"> 四</label>
+                    <label><input type="checkbox" name="repeat" value="5"> 五</label>
+                    <label><input type="checkbox" name="repeat" value="6"> 六</label>
+                </div>
+                <input type="text" id="alarmLabel" placeholder="闹钟标签" maxlength="20">
+                <button class="alarm-btn" onclick="saveAlarm()">保存闹钟</button>
+            </div>
+            <div id="alarmList" class="alarm-list"></div>
+        </div>
+    </div>
+</div>
+
+<div id="snakeModal" class="game-modal">
+    <div class="game-content">
+        <div class="game-header">
+            <span>贪吃蛇游戏</span>
+            <button class="close-btn" onclick="closeSnakeGame()">&times;</button>
+        </div>
+        <div class="game-body">
+            <button class="start-btn" onclick="startGame()">开始游戏</button>
+            <canvas id="snakeCanvas"></canvas>
+            <div class="game-info">
+                <span>得分: <span id="score">0</span></span>
+                <span>最高分: <span id="highScore">0</span></span>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="devEditorPanel" class="dev-editor-panel">
+    <div class="property-section">
+        <h4>布局属性</h4>
+        <div class="property-grid" id="layoutProperties"></div>
+    </div>
+    <div class="property-section">
+        <h4>外观属性</h4>
+        <div class="property-grid" id="appearanceProperties"></div>
+    </div>
+</div>
 </body>
 <script>
     // 新增Code模式逻辑
@@ -6304,6 +7101,11 @@ buttons.forEach(button => {
     // 新增文件管理功能
     let files = JSON.parse(localStorage.getItem('editorFiles')) || [];
     let currentFile = null;
+    files = files.map(f => ({
+        ...f,
+        pinned: f.pinned || false // 兼容已有文件
+    }));
+
 
     // 新增自动保存状态
     let autoSaveEnabled = true;
@@ -8465,7 +9267,7 @@ document.addEventListener('selectionchange', () => {
     }
 
     let selectedElement = null;
-let inspectMode = false;
+    let inspectMode = false;
 
 // 开发工具验证
 function showDevToolsAuth() {
@@ -10143,12 +10945,20 @@ const changelogData = [
         date: "2025-04-27",
         preview: "浏览器缓存查看，HTML可视化编辑.......",
         content: "Add + 浏览器缓存查看，编辑\n- Add + HTML可视化编辑\n- Add + 添加终端按钮\n- Add + Monaco配置设置\n- Add + 哈希加解密"
-    },    {
-        id: 88,
+    },
+    {
+        id: 8,
         title: "UpdateLog",
         date: "2025-04-28",
         preview: "Android，Bilibili.......",
         content: "Add + 语音输入\n- Add + BiliBili\n- Add + 仿Android模拟器\n- Add + 快捷键查看\n- Add + 修复Bug"
+    },
+    {
+        id: 9,
+        title: "UpdateLog",
+        date: "2025-04-30",
+        preview: "HEX，闹钟，置顶文件功能",
+        content: "Add + HEX模式\n- Add + 闹钟，计时器\n- Add + 置顶文件功能\n- Add + 内置浏览器\n- Add + 修复Bug\n- Add + 加密导出\n- Add + Game"
     }
 ];
 
@@ -11742,8 +12552,16 @@ window.addEventListener('beforeunload', () => {
         openApp(app) {
             const appMap = {
                 bilibili: 'https://www.bilibili.com',
-                edge: 'https://www.bing.com/search?q=', 
+                edge: 'https://www.microsoft.com/edge',
+                windows12: 'https://tjy-gitnub.github.io/win12/desktop.html',
+                msn_weather: 'https://www.msn.cn/zh-cn/weather/forecast/in-%E6%B2%B3%E5%8D%97%E7%9C%81,%E9%83%91%E5%B7%9E%E5%B8%82?loc=eyJsIjoi6YOR5bee5biCIiwiciI6Iuays%2BWNl%2BecgSIsImMiOiLkuK3ljY7kurrmsJHlhbHlkozlm70iLCJpIjoiQ04iLCJnIjoiemgtY24iLCJ4IjoiMTEzLjY2MTg0OTk3NTU4NTk0IiwieSI6IjM0Ljc5MTkyMzUyMjk0OTIyIn0%3D&weadegreetype=C&ocid=winp2fptaskbar&cvid=18a18271b3f14b8bd80617a1a00bb711&content=TeaserDayTempChange_wxnwtsdtrdc',
+                weather: 'weather'
             };
+    
+            if (app === 'weather') {
+                this.showWeather();
+                return;
+            }
     
             this.history.push(app);
             document.getElementById('appFrame').src = appMap[app];
@@ -11753,6 +12571,7 @@ window.addEventListener('beforeunload', () => {
     
         closeApp() {
             document.getElementById('appFrame').src = '';
+            document.getElementById('appFrame').srcdoc = '';
             document.getElementById('appWindow').style.display = 'none';
             document.querySelector('.app-grid').style.display = 'grid';
             this.history = [];
@@ -11768,7 +12587,11 @@ window.addEventListener('beforeunload', () => {
     
         refreshApp() {
             const frame = document.getElementById('appFrame');
-            frame.src = frame.src;
+            if (this.history[this.history.length-1] === 'weather') {
+                this.showWeather();
+            } else {
+                frame.src = frame.src;
+            }
         },
     
         updateTime() {
@@ -11808,6 +12631,106 @@ window.addEventListener('beforeunload', () => {
                 document.removeEventListener('mousemove', drag);
                 document.removeEventListener('mouseup', stopDrag);
             };
+        },
+    
+        async showWeather() {
+            const frame = document.getElementById('appFrame');
+            const windowContent = `
+                <html>
+                    <head>
+                        <style>
+                            .weather-container {
+                                padding: 20px;
+                                font-family: Arial, sans-serif;
+                            }
+                            .weather-header {
+                                font-size: 24px;
+                                margin-bottom: 20px;
+                            }
+                            .weather-info {
+                                display: grid;
+                                grid-template-columns: repeat(2, 1fr);
+                                gap: 15px;
+                            }
+                            .weather-item {
+                                padding: 15px;
+                                background: #f0f0f0;
+                                border-radius: 8px;
+                            }
+                            .loading {
+                                text-align: center;
+                                padding: 50px;
+                                font-size: 18px;
+                            }
+                            .error {
+                                color: red;
+                                text-align: center;
+                                padding: 50px;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="weather-container">
+                            <div class="weather-header">实时天气</div>
+                            <div id="weatherContent"></div>
+                        </div>
+                        <script>
+                            async function fetchWeather() {
+                                try {
+                                    const response = await fetch(
+                                        'https://api.openweathermap.org/data/2.5/weather?q=Henan&units=metric&appid=1099e8de2a8539bbce88af9f4beba5d0'
+                                    );
+                                    return await response.json();
+                                } catch (error) {
+                                    return { error: true };
+                                }
+                            }
+    
+                            async function updateWeather() {
+                                const container = document.getElementById('weatherContent');
+                                container.innerHTML = '<div class="loading">加载中...</div>';
+                                
+                                const data = await fetchWeather();
+                                
+                                if (data.error || data.cod !== 200) {
+                                    container.innerHTML = '<div class="error">获取天气失败</div>';
+                                    return;
+                                }
+    
+                                const html = \`
+                                    <div class="weather-info">
+                                        <div class="weather-item">
+                                            <div>🌡️ 温度</div>
+                                            <div>\${data.main.temp}°C</div>
+                                        </div>
+                                        <div class="weather-item">
+                                            <div>💧 湿度</div>
+                                            <div>\${data.main.humidity}%</div>
+                                        </div>
+                                        <div class="weather-item">
+                                            <div>🌬️ 风速</div>
+                                            <div>\${data.wind.speed} m/s</div>
+                                        </div>
+                                        <div class="weather-item">
+                                            <div>☁️ 天气</div>
+                                            <div>\${data.weather[0].main}</div>
+                                        </div>
+                                    </div>
+                                \`;
+                                
+                                container.innerHTML = html;
+                            }
+                            
+                            updateWeather();
+                        <\/script>
+                    </body>
+                </html>
+            `;
+    
+            document.getElementById('appWindow').style.display = 'flex';
+            document.querySelector('.app-grid').style.display = 'none';
+            frame.srcdoc = windowContent;
+            this.history.push('weather');
         }
     };
     
@@ -11833,6 +12756,1288 @@ window.addEventListener('beforeunload', () => {
         });
     });
     </script>
+    <script>
+        // 浏览器模式状态管理
+        let isBrowserMode = false;
+        let originalEditorContent = '';
+        let browserHistory = {
+            stack: [],
+            index: -1
+        };
+        
+        function toggleBrowserMode() {
+            isBrowserMode = !isBrowserMode;
+            const mainEditor = document.querySelector('.editor-container');
+            const menuBar = document.querySelector('.menu-bar');
+            
+            if (isBrowserMode) {
+                // 进入浏览器模式
+                originalEditorContent = editor.value;
+                mainEditor.style.display = 'none';
+                menuBar.style.display = 'none';
+                document.getElementById('browserContainer').style.display = 'flex';
+                initWebView('https://www.bing.com');
+                document.body.style.backgroundColor = '#ffffff';
+            } else {
+                // 退出浏览器模式
+                mainEditor.style.display = 'block';
+                menuBar.style.display = 'flex';
+                document.getElementById('browserContainer').style.display = 'none';
+                editor.value = originalEditorContent;
+                document.body.style.backgroundColor = '';
+            }
+        }
+        
+        function initWebView(url) {
+            const webview = document.getElementById('webview');
+            webview.src = normalizeUrl(url);
+            
+            webview.addEventListener('did-start-loading', () => {
+                updateNavButtons();
+            });
+            
+            webview.addEventListener('did-finish-load', () => {
+                updateNavButtons();
+                updateUrlBar(webview.getURL());
+            });
+        }
+        
+        function normalizeUrl(input) {
+            try {
+                return new URL(input).toString();
+            } catch {
+                try {
+                    return new URL(`https://${input}`).toString();
+                } catch {
+                    return `https://www.bing.com/search?q=${encodeURIComponent(input)}`;
+                }
+            }
+        }
+        
+        function handleBrowserUrlInput(e) {
+            if (e.key === 'Enter') {
+                const webview = document.getElementById('webview');
+                webview.loadURL(normalizeUrl(e.target.value));
+            }
+        }
+        
+        function browserGoBack() {
+            const webview = document.getElementById('webview');
+            if (webview.canGoBack()) webview.goBack();
+        }
+        
+        function browserGoForward() {
+            const webview = document.getElementById('webview');
+            if (webview.canGoForward()) webview.goForward();
+        }
+        
+        function browserReload() {
+            document.getElementById('webview').reload();
+        }
+        
+        function updateNavButtons() {
+            const webview = document.getElementById('webview');
+            document.getElementById('browserBackBtn').disabled = !webview.canGoBack();
+            document.getElementById('browserForwardBtn').disabled = !webview.canGoForward();
+        }
+        
+        function updateUrlBar(url) {
+            document.getElementById('browserUrlBar').value = url;
+        }
+        
+        function exitBrowserMode() {
+            toggleBrowserMode();
+        }
+        
+        // 安全策略配置
+        document.getElementById('webview').addEventListener('new-window', (e) => {
+            e.preventDefault();
+            window.open(e.url);
+        });
+        
+        // 快捷键支持
+        document.addEventListener('keydown', (e) => {
+            if (isBrowserMode) {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
+                    e.preventDefault();
+                    document.getElementById('browserUrlBar').focus();
+                }
+            }
+        });
+        </script>
+        <script>
+            // 加密配置
+            const cryptoConfig = {
+                algorithm: "AES-GCM",
+                keyLength: 256,
+                iterations: 100000,
+                saltLength: 16,
+                ivLength: 12
+            };
+            
+            // 显示加密模态框
+            function showEncryptModal() {
+                document.getElementById('encryptModal').style.display = 'flex';
+            }
+            
+            // 关闭加密模态框
+            function closeEncryptModal() {
+                document.getElementById('encryptModal').style.display = 'none';
+            }
+            
+            // 执行加密导出
+            async function performEncryption() {
+                const password = document.getElementById('encryptPassword').value;
+                const confirm = document.getElementById('confirmPassword').value;
+            
+                if (!validatePassword(password, confirm)) return;
+            
+                try {
+                    const { encryptedData, salt, iv } = await encryptFile(currentFile.content, password);
+                    saveEncryptedFile(encryptedData, salt, iv);
+                    showStatus('文件已安全加密导出');
+                    closeEncryptModal();
+                } catch (error) {
+                    showError(`加密失败: ${error.message}`);
+                }
+            }
+            
+            // 密码验证
+            function validatePassword(pwd, confirm) {
+                if (pwd.length < 8) {
+                    showError("密码至少需要8个字符");
+                    return false;
+                }
+                if (pwd !== confirm) {
+                    showError("两次输入的密码不一致");
+                    return false;
+                }
+                return true;
+            }
+            
+            // 核心加密方法
+            async function encryptFile(content, password) {
+                const salt = crypto.getRandomValues(new Uint8Array(cryptoConfig.saltLength));
+                const iv = crypto.getRandomValues(new Uint8Array(cryptoConfig.ivLength));
+                
+                const keyMaterial = await getKeyMaterial(password);
+                const key = await deriveKey(keyMaterial, salt);
+                
+                const encodedContent = new TextEncoder().encode(content);
+                const encrypted = await crypto.subtle.encrypt(
+                    { name: cryptoConfig.algorithm, iv },
+                    key,
+                    encodedContent
+                );
+            
+                return {
+                    encryptedData: arrayBufferToBase64(encrypted),
+                    salt: arrayBufferToBase64(salt),
+                    iv: arrayBufferToBase64(iv)
+                };
+            }
+            
+            // 密钥派生函数
+            async function getKeyMaterial(password) {
+                return crypto.subtle.importKey(
+                    "raw",
+                    new TextEncoder().encode(password),
+                    "PBKDF2",
+                    false,
+                    ["deriveKey"]
+                );
+            }
+            
+            async function deriveKey(keyMaterial, salt) {
+                return crypto.subtle.deriveKey(
+                    {
+                        name: "PBKDF2",
+                        salt,
+                        iterations: cryptoConfig.iterations,
+                        hash: "SHA-256"
+                    },
+                    keyMaterial,
+                    { name: cryptoConfig.algorithm, length: cryptoConfig.keyLength },
+                    false,
+                    ["encrypt", "decrypt"]
+                );
+            }
+            
+            // 保存加密文件
+            function saveEncryptedFile(data, salt, iv) {
+                const encryptedFile = {
+                    version: 1,
+                    cipher: cryptoConfig.algorithm,
+                    salt,
+                    iv,
+                    content: data,
+                    meta: {
+                        originalName: currentFile.name,
+                        timestamp: new Date().toISOString()
+                    }
+                };
+            
+                const blob = new Blob([JSON.stringify(encryptedFile)], {type: "application/json"});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${currentFile.name}.secure`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+            
+            // Base64转换工具
+            function arrayBufferToBase64(buffer) {
+                return btoa(String.fromCharCode(...new Uint8Array(buffer)));
+            }
+            
+            // 修改导入处理函数
+            async function handleEncryptedImport(file) {
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    try {
+                        const encryptedData = JSON.parse(e.target.result);
+                        const password = prompt('请输入解密密码：');
+                        const content = await decryptFile(encryptedData, password);
+                        createNewFile(encryptedData.meta.originalName, content);
+                    } catch (error) {
+                        showError('解密失败：密码错误或文件损坏');
+                    }
+                };
+                reader.readAsText(file);
+            }
+            
+            // 解密函数
+            async function decryptFile(encryptedData, password) {
+                const salt = base64ToArrayBuffer(encryptedData.salt);
+                const iv = base64ToArrayBuffer(encryptedData.iv);
+                const encryptedContent = base64ToArrayBuffer(encryptedData.content);
+            
+                const keyMaterial = await getKeyMaterial(password);
+                const key = await deriveKey(keyMaterial, salt);
+            
+                const decrypted = await crypto.subtle.decrypt(
+                    { name: cryptoConfig.algorithm, iv },
+                    key,
+                    encryptedContent
+                );
+            
+                return new TextDecoder().decode(decrypted);
+            }
+            
+            function base64ToArrayBuffer(base64) {
+                const binary = atob(base64);
+                return Uint8Array.from(binary, c => c.charCodeAt(0));
+            }
+            </script>
+    <script>
+        // 剪贴板历史管理
+        const clipboardHistory = {
+            maxItems: 20,
+            items: JSON.parse(localStorage.getItem('clipboardHistory') || '[]'),
+            
+            addItem(content) {
+                if (!content.trim()) return;
+                
+                // 去重检查
+                if (this.items.some(item => item.content === content)) return;
+        
+                this.items.unshift({
+                    content: content,
+                    timestamp: new Date().toISOString(),
+                    language: detectContentType(content)
+                });
+                
+                if (this.items.length > this.maxItems) {
+                    this.items.pop();
+                }
+                
+                this.save();
+                this.render();
+            },
+            
+            removeItem(index) {
+                this.items.splice(index, 1);
+                this.save();
+                this.render();
+            },
+            
+            clear() {
+                this.items = [];
+                this.save();
+                this.render();
+            },
+            
+            save() {
+                localStorage.setItem('clipboardHistory', JSON.stringify(this.items));
+            },
+            
+            render() {
+                const list = document.getElementById('clipboardList');
+                list.innerHTML = this.items.map((item, index) => `
+                    <div class="clipboard-item" data-index="${index}">
+                        <div class="clipboard-item-actions">
+                            <button class="btn-paste" onclick="pasteFromHistory(${index})">粘贴</button>
+                            <button class="btn-delete" onclick="removeFromHistory(${index})">×</button>
+                        </div>
+                        <div class="clipboard-content">${escapeHtml(item.content)}</div>
+                        <div class="clipboard-meta">
+                            <span>${formatTime(item.timestamp)}</span>
+                            <span>${item.language}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        };
+        
+        // 安全粘贴处理
+        async function handlePaste(e) {
+            try {
+                const text = await navigator.clipboard.readText();
+                clipboardHistory.addItem(text);
+            } catch (error) {
+                console.error('剪贴板访问被拒绝:', error);
+            }
+        }
+        
+        // 粘贴到编辑器
+        function pasteFromHistory(index) {
+            const content = clipboardHistory.items[index].content;
+            if (monacoEditor) {
+                monacoEditor.setValue(content);
+            } else {
+                document.getElementById('editor').value = content;
+            }
+        }
+        
+        // 删除单条历史
+        function removeFromHistory(index) {
+            if (confirm('确定删除这条记录吗？')) {
+                clipboardHistory.removeItem(index);
+            }
+        }
+        
+        // 清空历史
+        function clearClipboardHistory() {
+            if (confirm('确定清空所有剪贴板历史吗？')) {
+                clipboardHistory.clear();
+            }
+        }
+        
+        // 切换面板可见性
+        function toggleClipboardHistory() {
+            const panel = document.getElementById('clipboardPanel');
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+            if (panel.style.display === 'block') {
+                clipboardHistory.render();
+            }
+        }
+        
+        // 辅助函数
+        function escapeHtml(unsafe) {
+            return unsafe.replace(/&/g, "&amp;")
+                         .replace(/</g, "&lt;")
+                         .replace(/>/g, "&gt;")
+                         .replace(/"/g, "&quot;")
+                         .replace(/'/g, "&#039;");
+        }
+        
+        function formatTime(isoString) {
+            const date = new Date(isoString);
+            return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+        }
+        
+        function detectContentType(content) {
+            if (/<\/?[a-z][\s\S]*>/i.test(content)) return 'HTML';
+            if (/function|const|let|var|=>/.test(content)) return 'JavaScript';
+            if (/def |class |import /.test(content)) return 'Python';
+            return 'Text';
+        }
+        
+        // 初始化剪贴板监听
+        document.addEventListener('paste', (e) => {
+            if (e.target.closest('.clipboard-history-panel')) return;
+            handlePaste(e);
+        });
+        
+        // 启动时渲染
+        clipboardHistory.render();
+        </script>
+
+<script>
+// DOM元素引用
+const timerPanel = document.getElementById('timerPanel');
+const hoursInput = document.getElementById('hours');
+const minutesInput = document.getElementById('minutes');
+const secondsInput = document.getElementById('seconds');
+const timerDisplay = document.getElementById('timerDisplay');
+const alarmList = document.getElementById('alarmList');
+
+// 计时器状态
+let timer = null;
+let remainingTime = 0;
+let isTimerRunning = false;
+
+// 面板拖动逻辑
+
+let currentX = 100;
+let currentY = 100;
+
+function startDragging(e) {
+    isDragging = true;
+    const rect = timerPanel.getBoundingClientRect();
+    currentX = rect.left;
+    currentY = rect.top;
+    document.addEventListener('mousemove', dragPanel);
+    document.addEventListener('mouseup', stopDragging);
+}
+
+function dragPanel(e) {
+    if (isDragging) {
+        e.preventDefault();
+        currentX = e.clientX - (timerPanel.offsetWidth / 2);
+        currentY = e.clientY - 20;
+        timerPanel.style.left = currentX + 'px';
+        timerPanel.style.top = currentY + 'px';
+    }
+}
+
+function stopDragging() {
+    isDragging = false;
+    document.removeEventListener('mousemove', dragPanel);
+    document.removeEventListener('mouseup', stopDragging);
+}
+
+// 计时器功能
+function startTimer() {
+    if (!isTimerRunning) {
+        const hours = parseInt(hoursInput.value) || 0;
+        const minutes = Math.min(59, parseInt(minutesInput.value) || 0);
+        const seconds = Math.min(59, parseInt(secondsInput.value) || 0);
+        
+        remainingTime = hours * 3600 + minutes * 60 + seconds;
+        
+        if (remainingTime > 0) {
+            isTimerRunning = true;
+            timer = setInterval(() => {
+                remainingTime--;
+                updateTimerDisplay();
+                
+                if (remainingTime <= 0) {
+                    clearInterval(timer);
+                    try {
+                        new Notification('计时器结束', { body: '时间到了！' });
+                    } catch(err) {
+                        console.log('通知功能不可用');
+                    }
+                    isTimerRunning = false;
+                }
+            }, 1000);
+        }
+    }
+}
+
+function updateTimerDisplay() {
+    const hours = Math.floor(remainingTime / 3600);
+    const minutes = Math.floor((remainingTime % 3600) / 60);
+    const seconds = remainingTime % 60;
+    timerDisplay.textContent = 
+        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function pauseTimer() {
+    clearInterval(timer);
+    isTimerRunning = false;
+}
+
+function resetTimer() {
+    clearInterval(timer);
+    isTimerRunning = false;
+    hoursInput.value = '';
+    minutesInput.value = '';
+    secondsInput.value = '';
+    remainingTime = 0;
+    updateTimerDisplay();
+}
+
+// 闹钟功能
+let alarms = JSON.parse(localStorage.getItem('alarms')) || [];
+
+function saveAlarm() {
+    const time = document.getElementById('alarmTime').value;
+    const label = document.getElementById('alarmLabel').value || '闹钟';
+    const repeatDays = Array.from(document.querySelectorAll('[name="repeat"]:checked'))
+                          .map(checkbox => parseInt(checkbox.value));
+    
+    const newAlarm = {
+        id: Date.now(),
+        time,
+        label,
+        repeatDays,
+        active: true
+    };
+    
+    alarms.push(newAlarm);
+    localStorage.setItem('alarms', JSON.stringify(alarms));
+    renderAlarms();
+}
+
+function renderAlarms() {
+    alarmList.innerHTML = alarms.map(alarm => `
+        <div class="alarm-item" data-id="${alarm.id}">
+            <div>
+                <span style="font-weight:500;">${alarm.time}</span>
+                <small>${alarm.label}</small>
+                ${alarm.repeatDays.length ? '<span style="font-size:0.8em;">⏳</span>' : ''}
+            </div>
+            <div>
+                <button onclick="toggleAlarm(${alarm.id})" class="alarm-btn">
+                    ${alarm.active ? '⏺' : '⏸'}
+                </button>
+                <button onclick="deleteAlarm(${alarm.id})" class="alarm-btn">✕</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function toggleAlarm(id) {
+    const alarm = alarms.find(a => a.id === id);
+    if (alarm) {
+        alarm.active = !alarm.active;
+        localStorage.setItem('alarms', JSON.stringify(alarms));
+        renderAlarms();
+    }
+}
+
+function deleteAlarm(id) {
+    alarms = alarms.filter(a => a.id !== id);
+    localStorage.setItem('alarms', JSON.stringify(alarms));
+    renderAlarms();
+}
+
+// 通用功能
+function toggleTimerPanel() {
+    timerPanel.style.display = timerPanel.style.display === 'block' ? 'none' : 'block';
+    if (timerPanel.style.display === 'block') renderAlarms();
+}
+
+function closeTimerPanel() {
+    timerPanel.style.display = 'none';
+}
+
+// 初始化
+document.addEventListener('DOMContentLoaded', () => {
+    timerPanel.style.left = currentX + 'px';
+    timerPanel.style.top = currentY + 'px';
+    renderAlarms();
+    setInterval(checkAlarms, 1000);
+    Notification.requestPermission();
+});
+
+function checkAlarms() {
+    const now = new Date();
+    alarms.forEach(alarm => {
+        if (alarm.active) {
+            const [hours, minutes] = alarm.time.split(':');
+            const alarmDate = new Date();
+            alarmDate.setHours(hours, minutes, 0, 0);
+            
+            if (alarm.repeatDays.length) {
+                if (alarm.repeatDays.includes(now.getDay()) && 
+                    now.getHours() === Number(hours) && 
+                    now.getMinutes() === Number(minutes)) {
+                    triggerAlarm(alarm);
+                }
+            } else if (
+                now.getHours() === Number(hours) &&
+                now.getMinutes() === Number(minutes) &&
+                now.getSeconds() === 0
+            ) {
+                triggerAlarm(alarm);
+            }
+        }
+    });
+}
+
+function triggerAlarm(alarm) {
+    try {
+        new Notification(alarm.label, { 
+            body: `时间到了！当前时间：${new Date().toLocaleTimeString()}`
+        });
+    } catch(err) {
+        console.log('通知功能不可用');
+    }
+    if (!alarm.repeatDays.length) {
+        alarm.active = false;
+        localStorage.setItem('alarms', JSON.stringify(alarms));
+        renderAlarms();
+    }
+}
+    </script>
+
+<script>
+    // 通用通知函数
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <svg class="notification-icon" viewBox="0 0 24 24">
+                ${type === 'success' ? 
+                    '<path fill="#4CAF50" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>' :
+                    '<path fill="#2196F3" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>'
+                }
+            </svg>
+            <p class="notification-message">${message}</p>
+        `;
+        
+        document.body.appendChild(notification);
+        notification.classList.add('show');
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+    }
+    
+    // 贪吃蛇游戏逻辑
+    let snakeGame = null;
+    
+    class SnakeGame {
+        constructor(canvasId) {
+        this.canvas = document.getElementById(canvasId);
+        this.ctx = this.canvas.getContext('2d');
+        this.gridSize = 20;
+        this.tileCount = 20;
+        this.score = 0;
+        this.highScore = localStorage.getItem('snakeHighScore') || 0;
+        this.direction = 'right';
+        this.gameLoop = null;
+        
+        this.snake = [{ x: 10, y: 10 }];
+        this.food = this.generateFood();
+        
+        this.init();
+    }
+    
+    init() {
+        this.canvas.width = this.tileCount * this.gridSize;
+        this.canvas.height = this.tileCount * this.gridSize;
+        this.canvas.style.display = 'block';
+        document.getElementById('highScore').textContent = this.highScore;
+        this.draw(); // 初始化时立即绘制一次
+        
+        window.addEventListener('keydown', this.handleKeyPress.bind(this));
+    }
+
+    start() {
+        if (!this.gameLoop) {
+            this.gameLoop = setInterval(() => this.update(), 100);
+        }
+    }
+    
+    update() {
+        const head = {...this.snake[0]}; // 创建新的头部副本
+        
+        // 计算新头部位置
+        switch(this.direction) {
+            case 'up': head.y--; break;
+            case 'down': head.y++; break;
+            case 'left': head.x--; break;
+            case 'right': head.x++; break;
+        }
+
+        // 碰撞检测（在添加到数组前检查）
+        if (head.x < 0 || head.x >= this.tileCount || 
+            head.y < 0 || head.y >= this.tileCount ||
+            this.snake.some(segment => segment.x === head.x && segment.y === head.y)) {
+            this.gameOver();
+            return;
+        }
+
+        this.snake.unshift(head); // 添加新头部到数组
+
+        // 吃食物检测
+        if (head.x === this.food.x && head.y === this.food.y) {
+            this.score += 10;
+            document.getElementById('score').textContent = this.score;
+            
+            if (this.score >= 50) {
+                showNotification('🎉 得分达到50!', 'success');
+            }
+            
+            this.food = this.generateFood();
+        } else {
+            this.snake.pop();
+        }
+
+        this.draw();
+    }
+    
+    draw() {
+        // 获取CSS变量
+        const secondaryBg = getComputedStyle(document.documentElement)
+            .getPropertyValue('--secondary-bg').trim();
+            const accentColor = getComputedStyle(document.documentElement)
+            .getPropertyValue('--accent-color').trim();
+
+        // 绘制背景
+        this.ctx.fillStyle = secondaryBg;
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // 绘制蛇身
+        this.ctx.fillStyle = accentColor;
+        this.snake.forEach(segment => {
+            this.ctx.fillRect(
+                segment.x * this.gridSize,
+                segment.y * this.gridSize,
+                this.gridSize - 1,
+                this.gridSize - 1
+            );
+        });
+
+        // 绘制食物
+        this.ctx.fillStyle = '#ff4757';
+        this.ctx.fillRect(
+            this.food.x * this.gridSize,
+            this.food.y * this.gridSize,
+            this.gridSize - 1,
+            this.gridSize - 1
+        );
+    }
+    
+        generateFood() {
+            return {
+                x: Math.floor(Math.random() * this.tileCount),
+                y: Math.floor(Math.random() * this.tileCount)
+            };
+        }
+    
+        handleKeyPress(e) {
+            const keyMap = {
+                ArrowUp: 'up',
+                ArrowDown: 'down',
+                ArrowLeft: 'left',
+                ArrowRight: 'right'
+            };
+            
+            const newDirection = keyMap[e.key];
+            const oppositeDirections = {
+                up: 'down',
+                down: 'up',
+                left: 'right',
+                right: 'left'
+            };
+    
+            if (newDirection && newDirection !== oppositeDirections[this.direction]) {
+                this.direction = newDirection;
+            }
+        }
+    
+        gameOver() {
+            clearInterval(this.gameLoop);
+            this.gameLoop = null;
+            
+            if (this.score > this.highScore) {
+                this.highScore = this.score;
+                localStorage.setItem('snakeHighScore', this.highScore);
+                document.getElementById('highScore').textContent = this.highScore;
+            }
+            
+            this.canvas.style.display = 'none';
+            document.querySelector('.start-btn').style.display = 'block';
+            showNotification('游戏结束! 最终得分: ' + this.score);
+        }
+    }
+    
+    // 游戏窗口控制
+    function showSnakeGame() {
+        document.getElementById('snakeModal').style.display = 'block';
+    }
+    
+    function closeSnakeGame() {
+        document.getElementById('snakeModal').style.display = 'none';
+        if (snakeGame) {
+            snakeGame.gameOver();
+            snakeGame = null;
+        }
+    }
+    
+    function startGame() {
+        document.querySelector('.start-btn').style.display = 'none';
+        snakeGame = new SnakeGame('snakeCanvas');
+        snakeGame.start();
+    }
+    </script>
+<script>
+    import * as tf from '@tensorflow/tfjs';
+    import JSZip from 'jszip';
+    
+    let localModel = null;
+    
+    // 处理模型文件上传
+    document.getElementById('modelUpload').addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+    
+        try {
+            showModelStatus('正在解析模型文件...', 'info');
+            
+            // 解压ZIP文件（假设模型打包为ZIP）
+            const zip = new JSZip();
+            const contents = await zip.loadAsync(file);
+            
+            // 读取模型配置和权重
+            const modelJson = await contents.file('model.json').async('text');
+            const weightFiles = Object.keys(contents.files)
+                .filter(name => name.endsWith('.bin'))
+                .map(name => contents.file(name).async('arraybuffer'));
+            
+            const weights = await Promise.all(weightFiles);
+            const weightBuffers = weights.map((w, i) => ({
+                name: `weight_${i}.bin`,
+                data: new Uint8Array(w)
+            }));
+            
+            // 加载模型
+            localModel = await tf.loadLayersModel({
+                modelTopology: JSON.parse(modelJson),
+                weightData: concatenateWeights(weightBuffers),
+                weightSpecs: weightBuffers.map((_, i) => ({ name: `weight_${i}` }))
+            });
+            
+            showModelStatus('模型加载成功', 'success');
+            document.getElementById('modelSelect').appendChild(
+                new Option('本地模型', 'local')
+            );
+        } catch (error) {
+            showModelStatus(`加载失败: ${error.message}`, 'error');
+        }
+    });
+    
+    function concatenateWeights(buffers) {
+        const totalLength = buffers.reduce((sum, b) => sum + b.data.length, 0);
+        const result = new Uint8Array(totalLength);
+        let offset = 0;
+        buffers.forEach(b => {
+            result.set(b.data, offset);
+            offset += b.data.length;
+        });
+        return result.buffer;
+    }
+    
+    function showModelStatus(message, type) {
+        const status = document.getElementById('modelStatus');
+        status.textContent = message;
+        status.className = `status-bar ${type}`;
+        status.style.display = 'block';
+        setTimeout(() => status.style.display = 'none', 3000);
+    }
+</script>
+<script>
+    // 文件列表渲染逻辑修改
+    function initFileList() {
+        const fileList = document.getElementById('fileList');
+        
+        // 按置顶状态和时间排序
+        const sortedFiles = [...files].sort((a, b) => {
+            if (a.pinned !== b.pinned) return b.pinned - a.pinned;
+            return new Date(b.modified) - new Date(a.modified);
+        });
+    
+        fileList.innerHTML = sortedFiles.map(file => `
+            <div class="file-item ${currentFile?.id === file.id ? 'active' : ''} ${file.pinned ? 'pinned' : ''}" 
+                 data-id="${file.id}"
+                 ondblclick="openFile('${file.id}')">
+                ${file.name}
+                ${file.pinned ? '<span class="pin-icon">📌</span>' : ''}
+            </div>
+        `).join('');
+    }
+    
+    // 置顶/取消置顶功能
+    function togglePinFile() {
+        if (!contextMenuFile) return;
+        
+        files = files.map(file => 
+            file.id === contextMenuFile.id 
+                ? { ...file, pinned: !file.pinned }
+                : file
+        );
+        
+        saveFiles();
+        initFileList();
+        closeContextMenu();
+    }
+    
+    // 修改保存逻辑
+    function saveFiles() {
+        localStorage.setItem('editorFiles', JSON.stringify(files));
+        showStatus('文件状态已更新');
+    }
+    
+    // 右键菜单显示逻辑增强
+    function showContextMenu(x, y) {
+        const menu = document.getElementById('fileContextMenu');
+        const pinItem = document.getElementById('pinMenuItem');
+        
+        // 更新菜单项文字
+        pinItem.textContent = contextMenuFile?.pinned ? '取消置顶' : '置顶文件';
+        
+        // 定位逻辑
+        const menuWidth = 160;
+        const menuHeight = 160;
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        
+        // 防止菜单溢出视口
+        const adjustedX = x + menuWidth > viewportWidth ? viewportWidth - menuWidth : x;
+        const adjustedY = y + menuHeight > viewportHeight ? viewportHeight - menuHeight : y;
+        
+        menu.style.left = `${adjustedX}px`;
+        menu.style.top = `${adjustedY}px`;
+        menu.style.display = 'block';
+    }
+</script>
+<script>
+    // DevEditor状态管理
+    let selectedElement1 = null;
+    let isDevEditorActive = false;
+    
+    // 初始化iframe通信
+    function initDevEditor() {
+        const iframe = document.getElementById('previewFrame');
+        iframe.contentWindow.postMessage({ type: 'INIT_DEVTOOLS' }, '*');
+        
+        window.addEventListener('message', handleIframeMessage);
+    }
+    
+    function handleIframeMessage(event) {
+        if (event.data.type === 'ELEMENT_SELECTED') {
+            selectedElement1 = event.data;
+            updatePropertiesPanel();
+        }
+    }
+    
+    // 更新属性面板
+    function updatePropertiesPanel() {
+        const layoutProps = [
+            { name: 'width', value: selectedElement1.styles.width, unit: 'px' },
+            { name: 'height', value: selectedElement1.styles.height, unit: 'px' },
+            { name: 'margin', value: selectedElement1.styles.margin },
+            { name: 'padding', value: selectedElement1.styles.padding }
+        ];
+    
+        const appearanceProps = [
+            { name: 'color', type: 'color', value: selectedElement1.styles.color },
+            { name: 'background', type: 'color', value: selectedElement1.styles.backgroundColor },
+            { name: 'fontSize', value: selectedElement1.styles.fontSize, unit: 'px' },
+            { name: 'borderRadius', value: selectedElement1.styles.borderRadius, unit: 'px' }
+        ];
+    
+        renderProperties('layoutProperties', layoutProps);
+        renderProperties('appearanceProperties', appearanceProps);
+    }
+    
+    function renderProperties(containerId, properties) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = properties.map(prop => `
+            <div class="property-item">
+                <label>${prop.name}</label>
+                ${prop.type === 'color' ? `
+                    <input type="color" 
+                           class="property-input" 
+                           value="${prop.value || ''}"
+                           onchange="updateStyle('${prop.name}', this.value)">
+                    <div class="color-preview" 
+                         style="background: ${prop.value || 'transparent'}"
+                         onclick="this.previousElementSibling.click()"></div>
+                ` : `
+                    <input type="text" 
+                           class="property-input"
+                           value="${parseValue(prop.value, prop.unit)}"
+                           oninput="updateStyle('${prop.name}', this.value + '${prop.unit || ''}')">
+                `}
+            </div>
+        `).join('');
+    }
+    
+    function parseValue(value, unit) {
+        return unit ? parseInt(value) || 0 : value;
+    }
+    
+    // 更新样式
+    function updateStyle(property, value) {
+        const iframe = document.getElementById('previewFrame');
+        iframe.contentWindow.postMessage({
+            type: 'UPDATE_STYLE',
+            selector: selectedElement.selector,
+            property,
+            value
+        }, '*');
+    }
+    
+    // 切换开发编辑器
+    function toggleDevEditor() {
+        const panel = document.getElementById('devEditorPanel');
+        panel.classList.toggle('active');
+        isDevEditorActive = !isDevEditorActive;
+        
+        if (isDevEditorActive) {
+            initDevEditor();
+            injectDevToolsScript();
+        }
+    }
+    
+    // 注入iframe脚本
+    function injectDevToolsScript() {
+        const iframe = document.getElementById('previewFrame');
+        const script = `
+            <script>
+                let selectedElement1 = null;
+                
+                // 初始化元素选择
+                document.addEventListener('click', function(e) {
+                    if (e.target === document.documentElement) return;
+                    
+                    selectedElement1 = e.target;
+                    highlightElement(selectedElement1);
+                    
+                    const styles = getComputedStyle(selectedElement1);
+                    window.parent.postMessage({
+                        type: 'ELEMENT_SELECTED',
+                        selector: getElementSelector(selectedElement1),
+                        styles: {
+                            width: styles.width,
+                            height: styles.height,
+                            margin: styles.margin,
+                            padding: styles.padding,
+                            color: styles.color,
+                            backgroundColor: styles.backgroundColor,
+                            fontSize: styles.fontSize,
+                            borderRadius: styles.borderRadius
+                        }
+                    }, '*');
+                });
+    
+                function highlightElement(element) {
+                    element.style.outline = '2px solid #4a90e2';
+                    element.style.outlineOffset = '2px';
+                    setTimeout(() => {
+                        element.style.outline = '';
+                        element.style.outlineOffset = '';
+                    }, 1000);
+                }
+    
+                function getElementSelector(element) {
+                    return element.tagName.toLowerCase() + 
+                          (element.id ? '#' + element.id : '') + 
+                          (element.className ? '.' + element.className.split(' ').join('.') : '');
+                }
+    
+                // 处理样式更新
+                window.addEventListener('message', (e) => {
+                    if (e.data.type === 'UPDATE_STYLE' && selectedElement1) {
+                        selectedElement1.style[e.data.property] = e.data.value;
+                    }
+                });
+            <\/script>
+        `;
+        
+        iframe.contentDocument.body.insertAdjacentHTML('beforeend', script);
+    }
+    </script>
+<script>
+    // 编码转换器（需要引入第三方库如iconv-lite）
+    const encodings = {
+        'UTF-8': {
+            decode: data => new TextDecoder('utf-8').decode(data),
+            encode: text => new TextEncoder('utf-8').encode(text)
+        },
+        'UTF-16': {
+            decode: data => new TextDecoder('utf-16le').decode(data),
+            encode: text => new TextEncoder('utf-16le').encode(text)
+        },
+        'GBK': {
+            decode: data => window.GBK.decode(data),
+            encode: text => window.GBK.encode(text)
+        },
+        'BIG5': {
+            decode: data => window.Big5.decode(data),
+            encode: text => window.Big5.encode(text)
+        },
+        'Windows-1252': {
+            decode: data => new TextDecoder('windows-1252').decode(data),
+            encode: text => new TextEncoder('windows-1252').encode(text)
+        }
+    };
+    
+    // 全局状态
+    let hexMode = false;
+    let currentData = new Uint8Array();
+    let selectedEncoding = 'UTF-8';
+    
+    // 切换十六进制模式
+    function toggleHexMode() {
+        hexMode = !hexMode;
+        const editor = document.getElementById('editor');
+        const hexEditor = document.getElementById('hexEditor');
+        
+        if (hexMode) {
+            // 进入HEX模式
+            editor.style.display = 'none';
+            hexEditor.style.display = 'block';
+            document.getElementById('sideToolbar2').style.display = 'none';
+            currentData = stringToBytes(editor.value);
+            renderHexView();
+            updateTextPreview();
+        } else {
+            // 退出HEX模式
+            editor.value = bytesToString(currentData);
+            editor.style.display = 'block';
+            hexEditor.style.display = 'none';
+            document.getElementById('sideToolbar2').style.display = '';
+        }
+    }
+    
+    // 渲染十六进制视图
+    function renderHexView() {
+        const container = document.getElementById('hexData');
+        container.innerHTML = '';
+        
+        for (let i = 0; i < currentData.length; i += 16) {
+            const row = document.createElement('div');
+            row.className = 'hex-row';
+            
+            // 地址列
+            const address = document.createElement('div');
+            address.className = 'hex-address';
+            address.textContent = i.toString(16).padStart(8, '0');
+            row.appendChild(address);
+            
+            // 十六进制数据
+            for (let j = 0; j < 16; j++) {
+                const cell = document.createElement('div');
+                cell.className = 'hex-cell';
+                if (i + j < currentData.length) {
+                    cell.textContent = currentData[i + j].toString(16).padStart(2, '0');
+                    cell.addEventListener('click', () => editHexCell(i + j));
+                }
+                row.appendChild(cell);
+            }
+            
+            container.appendChild(row);
+        }
+    }
+    
+    // 更新文本预览
+    function updateTextPreview() {
+        const decoder = encodings[selectedEncoding].decode;
+        const text = decoder(currentData);
+        document.getElementById('textPreview').textContent = text;
+    }
+    
+    // 编辑十六进制单元格
+    function editHexCell(offset) {
+        const newValue = prompt('输入新的十六进制值 (00-FF):', 
+            currentData[offset].toString(16).padStart(2, '0'));
+        
+        if (newValue && /^[0-9a-fA-F]{2}$/.test(newValue)) {
+            currentData[offset] = parseInt(newValue, 16);
+            renderHexView();
+            updateTextPreview();
+        }
+    }
+    
+    // 工具函数
+    function stringToBytes(str) {
+        return new TextEncoder().encode(str);
+    }
+    
+    function bytesToString(bytes) {
+        return new TextDecoder().decode(bytes);
+    }
+    
+    // 初始化编码选择
+    document.getElementById('encodingSelect').addEventListener('change', function() {
+        selectedEncoding = this.value;
+        updateTextPreview();
+    });
+    
+    // 引入第三方编码库（示例使用gbk.js和big5.js）
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/encoding-japanese@2.0.0/encoding.min.js';
+    document.head.appendChild(script);
+    </script>
+    <script>
+        // 加载状态管理器
+        const loadingManager = {
+            queue: new Set(),
+            
+            show() {
+                document.body.classList.add('editor-loading');
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                document.querySelectorAll('button').forEach(btn => btn.disabled = true);
+            },
+            
+            hide() {
+                document.body.classList.remove('editor-loading');
+                document.getElementById('loadingOverlay').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                    document.querySelectorAll('button').forEach(btn => btn.disabled = false);
+                }, 300);
+            },
+            
+            async wrap(promise, taskName) {
+                this.queue.add(taskName);
+                this.show();
+                
+                try {
+                    const result = await promise;
+                    return result;
+                } finally {
+                    this.queue.delete(taskName);
+                    if (this.queue.size === 0) {
+                        this.hide();
+                    }
+                }
+            }
+        };
+        
+        // 修改初始化流程
+        async function initApp() {
+            await loadingManager.wrap(loadCoreResources(), '核心资源');
+            await loadingManager.wrap(initMonaco(), '编辑器初始化');
+            await loadingManager.wrap(preloadCommonLanguages(), '语言预加载');
+        }
+        
+        // 示例：修改Monaco初始化
+        async function initMonaco() {
+            return loadingManager.wrap(new Promise(resolve => {
+                require(['vs/editor/editor.main'], () => {
+                    // ...初始化代码...
+                    resolve();
+                });
+            }), 'monaco-init');
+        }
+        
+        // 修改模式切换
+        async function toggleMonacoMode() {
+            return loadingManager.wrap((async () => {
+                // ...原有切换代码...
+            })(), '模式切换');
+        }
+        
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initApp().catch(e => {
+                console.error('初始化失败:', e);
+                loadingManager.hide();
+                showError('应用初始化失败，请刷新重试');
+            });
+        });
+        </script>
         <script src="https://cdn.bootcdn.net/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/id3js@1.0.0/lib/id3.min.js"></script>
         <!-- CodeMirror 核心依赖 -->
